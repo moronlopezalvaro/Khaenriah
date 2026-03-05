@@ -10,7 +10,7 @@ public class Nave {
     public int ancho;
     public int alto;
 
-    public Nave(int x, int y, int velocidad, int vida) {
+    public Nave(int x, int y, int velocidad, int vida, int ancho, int alto) {
         this.x = x;
         this.y = y;
         this.velocidad = velocidad;
