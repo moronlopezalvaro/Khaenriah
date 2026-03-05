@@ -13,8 +13,7 @@ public class JPanel1Menu extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Dimension dimension = getSize();
-        ImageIcon icon = new ImageIcon(getClass().getResource("/resources/Menu.png"));
-        g.drawImage(icon.getImage(), 0, 0, dimension.width, dimension.height, this);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/com/ilerna/resources/Menu.png"));
+        g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
     }
 }
