@@ -20,7 +20,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
     public VentanaMenu() {
 
-        this.setTitle("NOMBRE");
+        this.setTitle("KHAENRI'AH");
         this.setSize(new Dimension(1080, 720));
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
