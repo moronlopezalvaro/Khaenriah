@@ -1,9 +1,9 @@
 ```mermaid
 graph LR
 
-actor((Jugador))
+jugador((Jugador))
 
-subgraph Sistema["KAENRI`AH"]
+subgraph Sistema["KAENRI'AH"]
 
 iniciar((Iniciar partida))
 mover((Mover nave))
@@ -12,15 +12,18 @@ destruir((Eliminar enemigos))
 puntos((Obtener puntuación))
 vidas((Perder vida))
 final((Fin de partida))
+
 end
 
-actor --> iniciar
-actor --> mover
-actor --> disparar
+jugador --> iniciar
 
-disparar --> destruir
-destruir --> puntos
-destruir --> vidas
-vidas --> final
+iniciar --> mover
+iniciar --> disparar
+
+disparar --> |&lt;&lt;incluye&gt;&gt;| destruir
+destruir --> |&lt;&lt;incluye&gt;&gt;| puntos
+
+destruir --> |&lt;&lt;incluye&gt;&gt;| vidas
+vidas --> |&lt;&lt;incluye&gt;&gt;| final
 
 ```
