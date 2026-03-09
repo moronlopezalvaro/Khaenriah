@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 public class Proyectil {
     public double x, y;
-    public int velocidad, ancho, alto;
+    public int velocidad = 20, ancho, alto;
 
     public Proyectil(double x, double y, int velocidad, int ancho, int alto) {
         this.x = x;

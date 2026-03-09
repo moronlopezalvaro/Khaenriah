@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 public class Nave {
     public int x;
     public int y;
-    public int velocidad;
+    public int velocidad = 800;
     public int vida;
     public int ancho;
     public int alto;

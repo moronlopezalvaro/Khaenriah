@@ -46,7 +46,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener 
             System.out.println("Error al cargar imágenes: " + e.getMessage());
         }
 
-        nave = new Nave(500, 600, 7, 100, 60, 60);
+        nave = new Nave(500, 600, 15, 100, 60, 60);
         enemigos = new ArrayList<>();
         proyectiles = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener 
         enemigos.clear();
         proyectiles.clear();
         boss = null;
-        enemigosAEliminar = 10 + (nivel * 5);
+        enemigosAEliminar = 10 + (nivel * 2);
 
         if (nivel == 10) {
             boss = new Jefe(440, 50, 4, 500); // Vida alta para el boss
