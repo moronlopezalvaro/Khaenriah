@@ -1,10 +1,18 @@
 package com.ilerna.vista;
 
-public class VentanaJuego {
+import javax.swing.JFrame;
 
-    public void setVisible(boolean b) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setVisible'");
+import java.awt.Dimension;
+
+public class VentanaJuego extends JFrame {
+
+    public VentanaJuego() {
+        this.setTitle("KHAENRI'AH");
+        this.setSize(new Dimension(1080, 720));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+
     }
 
 }
