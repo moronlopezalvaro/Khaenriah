@@ -36,7 +36,7 @@ public class VentanaDialogo extends JFrame implements ActionListener {
         botonSiguiente = new JButton(iconoBoton);
 
         // Ajustar el tamaño del botón al de la imagen reescalada
-        botonSiguiente.setBounds(390, 500, 300, 100);
+        botonSiguiente.setBounds(390, 573, 720, 100);
 
         // Quitar borde y fondo
         botonSiguiente.setBorderPainted(false);
