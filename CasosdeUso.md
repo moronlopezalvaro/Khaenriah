@@ -20,10 +20,10 @@ jugador --> iniciar
 iniciar --> mover
 iniciar --> disparar
 
-disparar --> |&lt;&lt;incluye&gt;&gt;| destruir
-destruir --> |&lt;&lt;incluye&gt;&gt;| puntos
+disparar -.-> |&lt;&lt;incluye&gt;&gt;| destruir
+destruir -.-> |&lt;&lt;incluye&gt;&gt;| puntos
 
-destruir --> |&lt;&lt;incluye&gt;&gt;| vidas
-vidas --> |&lt;&lt;incluye&gt;&gt;| final
+destruir -.-> |&lt;&lt;incluye&gt;&gt;| vidas
+vidas -.-> |&lt;&lt;incluye&gt;&gt;| final
 
 ```
