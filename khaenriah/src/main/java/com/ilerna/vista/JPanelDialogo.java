@@ -30,7 +30,7 @@ public class JPanelDialogo extends JPanel {
         textoDialogo.setWrapStyleWord(true);
 
         // Posicionarlo en el panel (ajusta estos números luego)
-        textoDialogo.setBounds(250, 530, 600, 100);
+        textoDialogo.setBounds(250, 530, 400, 100);
 
         this.add(textoDialogo);
     }
