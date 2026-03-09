@@ -116,7 +116,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener 
         // Barra de vida jugador
         g.setColor(Color.GRAY);
         g.fillRect(20, 20, 200, 20);
-        g.setColor(Color.RED);
+        g.setColor(Color.GREEN);
         g.fillRect(20, 20, nave.vida * 2, 20);
         g.setColor(Color.WHITE);
         g.drawRect(20, 20, 200, 20);
