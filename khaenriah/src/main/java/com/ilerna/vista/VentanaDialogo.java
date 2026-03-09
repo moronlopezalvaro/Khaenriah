@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 
 public class VentanaDialogo extends JFrame implements ActionListener {
     JButton botonSiguiente;
+    JPanelDialogo panel;
+    int estadoDialogo = 0;
 
     public VentanaDialogo() {
         this.setTitle("KHAENRI'AH");
@@ -20,7 +22,7 @@ public class VentanaDialogo extends JFrame implements ActionListener {
         this.setResizable(false);
 
         // Añadimos el panel que contiene la imagen de fondo
-        JPanelDialogo panel = new JPanelDialogo();
+        panel = new JPanelDialogo();
         panel.setLayout(null);
 
         // Cargar la imagen original
@@ -51,11 +53,47 @@ public class VentanaDialogo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonSiguiente) {
-            // Instanciar la nueva ventana de juego (ya se hace visible en su constructor)
-            new VentanaJuego();
+            if (estadoDialogo == 0) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogochampi.jpg");
+                panel.setTexto("Hola, soy Champi, piloto de élite de la Patrulla.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 1) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogocoloson.jpg");
+                panel.setTexto(
+                        "Hola, soy Coloson, mi planeta Khaenri'ah está siendo atacado por el malvado conquistador Zaroth.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 2) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogochampi.jpg");
+                panel.setTexto("Tranquilo Coloson, dejas el trabajo en manos del mejor piloto de la galaxia.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 3) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogocoloson.jpg");
+                panel.setTexto("Gracias Champi, suerte en tu aventura.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 4) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogochampi.jpg");
+                panel.setTexto("Zaroth, he venido a acabar con tu maldita tiranía.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 5) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogozaroth.jpg");
+                panel.setTexto(
+                        "JAJAJAJA, MALDITO PATRULLERO GALÁCTICO, ACABARÉ CONTIGO COMO TODOS LOS QUE HAN INTENTADO DETENERME.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 6) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogozaroth.jpg");
+                panel.setTexto("GEOCENTINELAS, ACABAD CON ESTE DESCEREBRADO PILOTO.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 7) {
+                panel.setImagenFondo("/com/ilerna/resources/dialogogeocentinelas.jpg");
+                panel.setTexto("TEXTO PRUEBA");
+                estadoDialogo++;
+            } else {
+                // Instanciar la nueva ventana de juego (ya se hace visible en su constructor)
+                new VentanaJuego();
 
-            // Cerrar la ventana de diálogo
-            this.dispose();
+                // Cerrar la ventana de diálogo
+                this.dispose();
+            }
         }
     }
 

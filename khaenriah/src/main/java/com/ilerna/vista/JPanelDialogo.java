@@ -16,7 +16,7 @@ public class JPanelDialogo extends JPanel {
 
         // Inicializar el área de texto
         textoDialogo = new JTextArea();
-        textoDialogo.setText("¡Hola! Soy Coloson. Bienvenido a Khaenriah. \nAquí es donde empieza tu aventura.");
+        textoDialogo.setText("Solicito ayuda a la Patrulla Galáctica, mi planeta está en peligro.");
         textoDialogo.setFont(new Font("Arial", Font.BOLD, 18));
         textoDialogo.setForeground(Color.WHITE);
 
@@ -37,6 +37,12 @@ public class JPanelDialogo extends JPanel {
 
     public void setTexto(String nuevoTexto) {
         textoDialogo.setText(nuevoTexto);
+    }
+
+    public void setImagenFondo(String rutaImagen) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(rutaImagen));
+        imagenFondo = icon.getImage();
+        this.repaint();
     }
 
     @Override
