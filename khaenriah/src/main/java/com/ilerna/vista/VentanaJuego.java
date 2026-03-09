@@ -15,6 +15,9 @@ public class VentanaJuego extends JFrame {
 
         JPanel2Juego panel = new JPanel2Juego();
         this.add(panel);
+
+        this.setVisible(true);
+        panel.requestFocus();
     }
 
 }

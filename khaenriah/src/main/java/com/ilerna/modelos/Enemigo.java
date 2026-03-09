@@ -3,8 +3,8 @@ package com.ilerna.modelos;
 import java.awt.Rectangle;
 
 public class Enemigo {
-    double x, y;
-    int velocidad, ancho, alto;
+    public double x, y;
+    public int velocidad, ancho, alto;
 
     public Enemigo(double x, double y, int velocidad, int ancho, int alto) {
         this.x = x;

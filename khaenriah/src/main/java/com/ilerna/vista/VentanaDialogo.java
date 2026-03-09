@@ -51,9 +51,8 @@ public class VentanaDialogo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonSiguiente) {
-            // Instanciar y hacer visible la nueva ventana de juego
-            VentanaJuego ventanaJuego = new VentanaJuego();
-            ventanaJuego.setVisible(true);
+            // Instanciar la nueva ventana de juego (ya se hace visible en su constructor)
+            new VentanaJuego();
 
             // Cerrar la ventana de diálogo
             this.dispose();
