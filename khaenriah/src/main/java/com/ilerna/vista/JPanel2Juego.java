@@ -65,7 +65,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         proyectiles.clear();
         proyectilesBoss.clear();
         boss = null;
-        enemigosAEliminar = 10 + (nivel * 2);
+        enemigosAEliminar = 5 + nivel;
 
         if (nivel == 10) {
             boss = new Jefe(440, 50, 4, 500); // Vida alta para el boss
@@ -213,6 +213,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             Enemigo e = it.next();
             e.y += e.velocidad;
             if (e.y > getHeight()) {
+                nave.vida -= 3;
                 it.remove();
             }
         }
@@ -253,7 +254,6 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
             // Disparo del Boss
             if (random.nextInt(30) == 0) {
-                // Usamos velocidad -8 para que al hacer y -= -8 se mueva hacia abajo (+8)
                 proyectilesBoss.add(new Proyectil(boss.x + (boss.ancho / 2) - 5, boss.y + boss.alto, -20, 10, 20));
             }
         }
@@ -350,7 +350,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     private void disparo() {
         if (cooldownDisparo <= 0) {
-            int velocidadBala = 8 + nivel;
+            int velocidadBala = 10 + nivel;
             // He puesto los valores que tenías: velocidad 8 y centrado -5
             proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 5, nave.y, velocidadBala, 10, 20));
             cooldownDisparo = 5; // Aproximadamente 0.3 segundos (15 * 20ms)

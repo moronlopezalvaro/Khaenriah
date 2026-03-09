@@ -84,11 +84,12 @@ public class VentanaDialogo extends JFrame implements ActionListener {
                 panel.setTexto("GEOCENTINELAS, ACABAD CON ESTE DESCEREBRADO PILOTO.");
                 estadoDialogo++;
             } else if (estadoDialogo == 7) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogogeocentinelas.jpg");
-                panel.setTexto("TEXTO PRUEBA");
+                // Corregido: dialogogeocentinela.jpg (sin la 's')
+                panel.setImagenFondo("/com/ilerna/resources/dialogogeocentinela.jpg");
+                panel.setTexto("GEOCENTINELAS: ¡A la orden, amo Zaroth! ¡Eliminaremos al intruso!");
                 estadoDialogo++;
             } else {
-                // Instanciar la nueva ventana de juego (ya se hace visible en su constructor)
+                // Instanciar la nueva ventana de juego
                 new VentanaJuego();
 
                 // Cerrar la ventana de diálogo
