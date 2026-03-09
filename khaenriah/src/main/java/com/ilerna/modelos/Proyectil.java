@@ -4,14 +4,14 @@ import java.awt.Rectangle;
 
 public class Proyectil {
     public double x, y;
-    public int velocidad = 20, ancho, alto;
+    public int velocidad, ancho, alto;
 
     public Proyectil(double x, double y, int velocidad, int ancho, int alto) {
         this.x = x;
         this.y = y;
-        this.velocidad = velocidad;
         this.ancho = ancho;
         this.alto = alto;
+        this.velocidad = velocidad;
     }
 
     // Para cuando el proyectil

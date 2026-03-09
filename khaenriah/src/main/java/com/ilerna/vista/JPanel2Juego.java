@@ -19,6 +19,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Nave nave;
     private List<Enemigo> enemigos;
     private List<Proyectil> proyectiles;
+    private List<Proyectil> proyectilesBoss;
     private Jefe boss;
 
     private int nivel = 1;
@@ -43,6 +44,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgNave = new ImageIcon(getClass().getResource("/com/ilerna/resources/nave.png")).getImage();
             imgEnemigo = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinela.png")).getImage();
             imgBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/bossFinal.png")).getImage();
+
         } catch (Exception e) {
             System.out.println("Error al cargar imágenes: " + e.getMessage());
         }
@@ -50,6 +52,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         nave = new Nave(500, 600, 15, 100, 60, 60);
         enemigos = new ArrayList<>();
         proyectiles = new ArrayList<>();
+        proyectilesBoss = new ArrayList<>();
 
         timer = new Timer(20, this);
         timer.start();
@@ -60,6 +63,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private void iniciarNivel() {
         enemigos.clear();
         proyectiles.clear();
+        proyectilesBoss.clear();
         boss = null;
         enemigosAEliminar = 10 + (nivel * 2);
 
@@ -103,9 +107,15 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.fillRect(boss.x, boss.y - 20, (int) (boss.ancho * (boss.vida / 500.0)), 10);
         }
 
-        // Dibujar Proyectiles
-        g.setColor(Color.YELLOW);
+        // Dibujar Proyectiles Jugador
+        g.setColor(Color.BLUE);
         for (Proyectil p : proyectiles) {
+            g.fillRect((int) p.x, (int) p.y, p.ancho, p.alto);
+        }
+
+        // Dibujar Proyectiles Boss
+        g.setColor(Color.RED);
+        for (Proyectil p : proyectilesBoss) {
             g.fillRect((int) p.x, (int) p.y, p.ancho, p.alto);
         }
 
@@ -163,21 +173,30 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (derecha && nave.x < getWidth() - nave.ancho)
             nave.x += nave.velocidad;
 
-        if (disparo && cooldownDisparo <= 0) {
-            proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 5, nave.y, 10, 10, 20));
-            cooldownDisparo = 15;
+        if (disparo) {
+            disparo();
         }
         if (cooldownDisparo > 0)
             cooldownDisparo--;
     }
 
     private void actualizarProyectiles() {
+        // Proyectiles Jugador
         Iterator<Proyectil> it = proyectiles.iterator();
         while (it.hasNext()) {
             Proyectil p = it.next();
             p.mover();
-            if (p.y < -50)
+            if (p.y < -100)
                 it.remove();
+        }
+
+        // Proyectiles Boss
+        Iterator<Proyectil> itB = proyectilesBoss.iterator();
+        while (itB.hasNext()) {
+            Proyectil p = itB.next();
+            p.mover(); // Moverá hacia abajo si velocidad es negativa
+            if (p.y > getHeight() + 100)
+                itB.remove();
         }
     }
 
@@ -199,11 +218,43 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
     }
 
+    // BOSS FINAL
+    private int bossVelX = 5;
+    private int bossVelY = 3;
+
     private void actualizarBoss() {
         if (boss != null) {
-            boss.x += boss.velocidad;
-            if (boss.x <= 0 || boss.x >= getWidth() - boss.ancho) {
-                boss.velocidad *= -1;
+            // Movimiento aleatorio suavizado
+            if (random.nextInt(50) == 0)
+                bossVelX = (random.nextInt(11) - 5); // Cambio de dirección X
+            if (random.nextInt(100) == 0)
+                bossVelY = (random.nextInt(7) - 3); // Cambio de dirección Y
+
+            boss.x += bossVelX;
+            boss.y += bossVelY;
+
+            // Limites de pantalla para el boss
+            if (boss.x < 0) {
+                boss.x = 0;
+                bossVelX *= -1;
+            }
+            if (boss.x > getWidth() - boss.ancho) {
+                boss.x = getWidth() - boss.ancho;
+                bossVelX *= -1;
+            }
+            if (boss.y < 0) {
+                boss.y = 0;
+                bossVelY *= -1;
+            }
+            if (boss.y > 300) {
+                boss.y = 300;
+                bossVelY *= -1;
+            } // No baja demasiado
+
+            // Disparo del Boss
+            if (random.nextInt(30) == 0) {
+                // Usamos velocidad -8 para que al hacer y -= -8 se mueva hacia abajo (+8)
+                proyectilesBoss.add(new Proyectil(boss.x + (boss.ancho / 2) - 5, boss.y + boss.alto, -20, 10, 20));
             }
         }
     }
@@ -216,7 +267,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         while (itE.hasNext()) {
             Enemigo e = itE.next();
             if (rectNave.intersects(e.getBounds())) {
-                nave.vida -= 10;
+                nave.vida -= 5;
                 itE.remove();
             }
         }
@@ -237,7 +288,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             }
 
             if (!hit && boss != null && rectP.intersects(boss.getBounds())) {
-                boss.vida -= 10;
+                boss.vida -= 7;
                 hit = true;
                 if (boss.vida <= 0) {
                     juegoTerminado = true;
@@ -252,6 +303,16 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         // Colisión Nave - Boss
         if (boss != null && rectNave.intersects(boss.getBounds())) {
             nave.vida -= 1; // Daño ligero por contacto continuo
+        }
+
+        // Colisión Proyectil Boss - Nave
+        Iterator<Proyectil> itPB = proyectilesBoss.iterator();
+        while (itPB.hasNext()) {
+            Proyectil p = itPB.next();
+            if (rectNave.intersects(p.getBounds())) {
+                nave.vida -= 10;
+                itPB.remove();
+            }
         }
     }
 
@@ -288,7 +349,13 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     }
 
     private void disparo() {
-        proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 5, nave.y, 10, 10, 20));
+        if (cooldownDisparo <= 0) {
+            int velocidadBala = 8 + nivel;
+            // He puesto los valores que tenías: velocidad 8 y centrado -5
+            proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 5, nave.y, velocidadBala, 10, 20));
+            cooldownDisparo = 5; // Aproximadamente 0.3 segundos (15 * 20ms)
+
+        }
     }
 
     @Override
