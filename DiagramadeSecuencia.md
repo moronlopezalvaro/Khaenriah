@@ -29,8 +29,8 @@ sequenceDiagram
 
     Juego->>SistemaVidas: Quita vida si es necesario
     SistemaVidas-->>Jugador: Actualiza vidas
-
-```
-
     SistemaVidas->>Final: Si vidas = 0
     Final-->>Jugador: Muestra Fin de partida
+```
+
+    
