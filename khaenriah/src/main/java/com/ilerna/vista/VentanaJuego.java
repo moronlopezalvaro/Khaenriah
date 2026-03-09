@@ -13,6 +13,8 @@ public class VentanaJuego extends JFrame {
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 
+        JPanel2Juego panel = new JPanel2Juego();
+        this.add(panel);
     }
 
 }

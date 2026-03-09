@@ -1,12 +1,17 @@
 package com.ilerna.vista;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class VentanaDialogo extends JFrame {
+public class VentanaDialogo extends JFrame implements ActionListener {
+    JButton botonSiguiente;
+
     public VentanaDialogo() {
         this.setTitle("KHAENRI'AH");
         this.setSize(new Dimension(1080, 720));
@@ -16,30 +21,41 @@ public class VentanaDialogo extends JFrame {
 
         // Añadimos el panel que contiene la imagen de fondo
         JPanelDialogo panel = new JPanelDialogo();
-        this.add(panel);
+        panel.setLayout(null);
 
-        // Es importante llamar a setVisible al final para que los componentes se
-        // rendericen bien
-        this.setVisible(true);
+        // Cargar la imagen original
+        ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/com/ilerna/resources/siguiente.png"));
+
+        // Reescalar la imagen
+        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(300, 100, Image.SCALE_SMOOTH);
+
+        // Crear un nuevo icono con la imagen reescalada
+        ImageIcon iconoBoton = new ImageIcon(imagenEscalada);
 
         // Crear el botón con la imagen
-        JButton botonJugar = new JButton(iconoJugar);
+        botonSiguiente = new JButton(iconoBoton);
 
         // Ajustar el tamaño del botón al de la imagen reescalada
-        botonJugar.setBounds(390, 500, 300, 100);
-        botonJugar.addActionListener(this);
-        panel.add(botonJugar);
+        botonSiguiente.setBounds(390, 500, 300, 100);
 
+        // Quitar borde y fondo
+        botonSiguiente.setBorderPainted(false);
+        botonSiguiente.setContentAreaFilled(false);
+        botonSiguiente.setFocusPainted(false);
+
+        botonSiguiente.addActionListener(this);
+        panel.add(botonSiguiente);
+        this.add(panel);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        Object botonJugar;
-        if (e.getSource() == botonJugar) {
-            // Instanciar y hacer visible la nueva ventana de diálogo
+        if (e.getSource() == botonSiguiente) {
+            // Instanciar y hacer visible la nueva ventana de juego
             VentanaJuego ventanaJuego = new VentanaJuego();
             ventanaJuego.setVisible(true);
 
-            // Cerrar la ventana del menú actual
+            // Cerrar la ventana de diálogo
             this.dispose();
         }
     }
