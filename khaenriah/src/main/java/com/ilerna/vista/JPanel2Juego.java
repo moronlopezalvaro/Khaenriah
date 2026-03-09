@@ -9,7 +9,7 @@ import java.util.Random;
 import javax.swing.*;
 import com.ilerna.modelos.*;
 
-public class JPanel2Juego extends JPanel implements ActionListener, KeyListener {
+public class JPanel2Juego extends JPanel implements ActionListener, KeyListener, MouseListener {
     private Image imagenFondo;
     private Image imgNave;
     private Image imgEnemigo;
@@ -35,6 +35,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener 
         this.setLayout(null);
         this.setFocusable(true);
         this.addKeyListener(this);
+        this.addMouseListener(this);
 
         // Cargar imágenes
         try {
@@ -257,26 +258,52 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener 
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A)
+        if (key == KeyEvent.VK_A)
             izquierda = true;
-        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D)
+        if (key == KeyEvent.VK_D)
             derecha = true;
-        if (key == KeyEvent.VK_SPACE)
-            disparo = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
-        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A)
+        if (key == KeyEvent.VK_A)
             izquierda = false;
-        if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D)
+        if (key == KeyEvent.VK_D)
             derecha = false;
-        if (key == KeyEvent.VK_SPACE)
-            disparo = false;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            disparo();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            disparo();
+        }
+    }
+
+    private void disparo() {
+        proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 5, nave.y, 10, 10, 20));
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
     }
 }
