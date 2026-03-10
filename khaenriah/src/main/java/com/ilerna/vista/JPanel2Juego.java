@@ -26,6 +26,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private int enemigosAEliminar = 10;
     private boolean juegoTerminado = false;
     private boolean victoria = false;
+    private boolean pausado = false;
     private Random random = new Random();
 
     // Controles
@@ -121,6 +122,19 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         // Interfaz de Usuario (HUD)
         dibujarHUD(g);
+
+        // Menú de Pausa
+        if (pausado && !juegoTerminado) {
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, getWidth(), getHeight());
+
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 50));
+            g.drawString("PAUSA", getWidth() / 2 - 80, getHeight() / 2);
+
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Pulsa ESC para continuar", getWidth() / 2 - 110, getHeight() / 2 + 50);
+        }
     }
 
     private void dibujarHUD(Graphics g) {
@@ -145,8 +159,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (juegoTerminado)
+        if (juegoTerminado || pausado) {
+            repaint(); // Seguimos repintando para ver el menú de pausa
             return;
+        }
 
         actualizarNave();
         actualizarProyectiles();
@@ -323,6 +339,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             izquierda = true;
         if (key == KeyEvent.VK_D)
             derecha = true;
+
+        if (key == KeyEvent.VK_ESCAPE) {
+            pausado = !pausado;
+        }
     }
 
     @Override
