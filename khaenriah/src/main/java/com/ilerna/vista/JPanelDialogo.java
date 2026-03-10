@@ -7,12 +7,20 @@ public class JPanelDialogo extends JPanel {
 
     private Image imagenFondo;
     private JTextArea textoDialogo;
+    private JLabel nombrePersonaje;
 
     public JPanelDialogo() {
         this.setLayout(null);
         // Cargar la imagen solo una vez
         ImageIcon icon = new ImageIcon(getClass().getResource("/com/ilerna/resources/dialogocoloson.jpg"));
         imagenFondo = icon.getImage();
+
+        // Inicializar el nombre del personaje
+        nombrePersonaje = new JLabel("Coloson");
+        nombrePersonaje.setFont(new Font("Arial", Font.BOLD, 22));
+        nombrePersonaje.setForeground(Color.YELLOW);
+        nombrePersonaje.setBounds(250, 500, 400, 30);
+        this.add(nombrePersonaje);
 
         // Inicializar el área de texto
         textoDialogo = new JTextArea();
@@ -37,6 +45,10 @@ public class JPanelDialogo extends JPanel {
 
     public void setTexto(String nuevoTexto) {
         textoDialogo.setText(nuevoTexto);
+    }
+
+    public void setNombre(String nombre) {
+        nombrePersonaje.setText(nombre);
     }
 
     public void setImagenFondo(String rutaImagen) {
