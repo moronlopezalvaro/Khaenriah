@@ -15,6 +15,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgEnemigo;
     private Image imgBoss;
     private Image imgPausa;
+    private ImageIcon iconProyectil;
 
     private Timer timer;
     private Nave nave;
@@ -47,6 +48,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgEnemigo = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinela.png")).getImage();
             imgBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/bossFinal.png")).getImage();
             imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/MenuPausa.png")).getImage();
+
+            // Mantener como ImageIcon en lugar de extraer la Image directamente ayuda a
+            // conservar la animación original a su velocidad
+            iconProyectil = new ImageIcon(getClass().getResource("/com/ilerna/resources/bala.gif"));
 
         } catch (Exception e) {
             System.out.println("Error al cargar imágenes: " + e.getMessage());
@@ -111,9 +116,11 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
 
         // Dibujar Proyectiles Jugador
-        g.setColor(Color.CYAN);
         for (Proyectil p : proyectiles) {
-            g.fillRect((int) p.x, (int) p.y, p.ancho, p.alto);
+            // Usar el ImageIcon directamente con un Observer para forzar que avance la
+            // animación
+            g.drawImage(iconProyectil.getImage(), (int) p.x, (int) p.y, p.ancho, p.alto,
+                    iconProyectil.getImageObserver());
         }
 
         // Dibujar Proyectiles Boss
@@ -392,8 +399,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private void disparo() {
         if (cooldownDisparo <= 0) {
             int velocidadBala = 10 + nivel;
-            // He puesto los valores que tenías: velocidad 8 y centrado -5
-            proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 5, nave.y, velocidadBala, 10, 20));
+            // Aumentando el tamaño de la bala: de (10, 20) a (30, 60)
+            // Ajustando también el centrado X: -15
+            proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 15, nave.y, velocidadBala, 30, 60));
             cooldownDisparo = 5; // Aproximadamente 0.3 segundos (15 * 20ms)
 
         }
