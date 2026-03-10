@@ -30,7 +30,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
         ImageIcon iconoOriginal = new ImageIcon(getClass().getResource("/com/ilerna/resources/StartIcono.png"));
 
         // Reescalar la imagen al tamaño que quieras (por ejemplo 150x50)
-        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(300, 100, Image.SCALE_SMOOTH);
+        Image imagenEscalada = iconoOriginal.getImage().getScaledInstance(300, 200, Image.SCALE_SMOOTH);
 
         // Crear un nuevo icono con la imagen reescalada
         ImageIcon iconoStart = new ImageIcon(imagenEscalada);
@@ -39,7 +39,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
         botonStart = new JButton(iconoStart);
 
         // Ajustar el tamaño del botón al de la imagen reescalada
-        botonStart.setBounds(390, 500, 300, 100);
+        botonStart.setBounds(440, 525, 190, 90);
 
         // Quitar borde y fondo
         botonStart.setBorderPainted(false);
