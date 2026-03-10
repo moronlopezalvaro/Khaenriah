@@ -46,7 +46,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgNave = new ImageIcon(getClass().getResource("/com/ilerna/resources/nave.png")).getImage();
             imgEnemigo = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinela.png")).getImage();
             imgBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/bossFinal.png")).getImage();
-            imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/Pausa.png")).getImage();
+            imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/MenuPausa.png")).getImage();
 
         } catch (Exception e) {
             System.out.println("Error al cargar imágenes: " + e.getMessage());
