@@ -14,6 +14,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgNave;
     private Image imgEnemigo;
     private Image imgBoss;
+    private Image imgPausa;
 
     private Timer timer;
     private Nave nave;
@@ -45,6 +46,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgNave = new ImageIcon(getClass().getResource("/com/ilerna/resources/nave.png")).getImage();
             imgEnemigo = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinela.png")).getImage();
             imgBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/bossFinal.png")).getImage();
+            imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/Pausa.png")).getImage();
 
         } catch (Exception e) {
             System.out.println("Error al cargar imágenes: " + e.getMessage());
@@ -128,12 +130,20 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
 
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 50));
-            g.drawString("PAUSA", getWidth() / 2 - 80, getHeight() / 2);
+            // Dibujar imagen de pausa
+            int imgW = 400; // Ajustar según tamaño deseado
+            int imgH = 200;
+            g.drawImage(imgPausa, getWidth() / 2 - imgW / 2, getHeight() / 2 - imgH / 2 - 50, imgW, imgH, this);
 
+            // Botón Salir
+            g.setColor(Color.RED);
+            g.fillRoundRect(getWidth() / 2 - 75, getHeight() / 2 + 80, 150, 40, 10, 10);
+            g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("Pulsa ESC para continuar", getWidth() / 2 - 110, getHeight() / 2 + 50);
+            g.drawString("SALIR", getWidth() / 2 - 30, getHeight() / 2 + 107);
+
+            g.setFont(new Font("Arial", Font.PLAIN, 16));
+            g.drawString("Pulsa ESC para continuar", getWidth() / 2 - 90, getHeight() / 2 + 150);
         }
     }
 
@@ -356,7 +366,16 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+        if (pausado && !juegoTerminado) {
+            int mx = e.getX();
+            int my = e.getY();
+            // Detectar clic en botón SALIR (coordenadas aproximadas basadas en paintComponent)
+            if (mx >= getWidth() / 2 - 75 && mx <= getWidth() / 2 + 75 &&
+                my >= getHeight() / 2 + 80 && my <= getHeight() / 2 + 120) {
+                System.exit(0);
+            }
+        }
+        if (e.getButton() == MouseEvent.BUTTON1 && !pausado) {
             disparo();
         }
     }
