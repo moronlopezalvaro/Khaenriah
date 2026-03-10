@@ -131,8 +131,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.fillRect(0, 0, getWidth(), getHeight());
 
             // Dibujar imagen de pausa nueva (ya incluye los textos y el botón SALIR)
-            int imgW = 600; // Tamaño ampliado para mejor legibilidad
-            int imgH = 450;
+            int imgW = 700; // Tamaño ampliado para mejor legibilidad
+            int imgH = 350;
             g.drawImage(imgPausa, getWidth() / 2 - imgW / 2, getHeight() / 2 - imgH / 2, imgW, imgH, this);
         }
     }
@@ -367,13 +367,13 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             int my = e.getY();
             // Detectar clic en el botón SALIR de la nueva imagen
             // (El botón está centrado en la parte inferior del panel)
-            int btnW = 200;
-            int btnH = 60;
-            int btnX = getWidth() / 2 - btnW / 2;
-            int btnY = getHeight() / 2 + 100;
+            int btnWidth = 300;
+            int btnHeight = 80;
+            int btnX = getWidth() / 2 - btnWidth / 2;
+            int btnY = getHeight() / 2 + 60;
 
-            if (mx >= btnX && mx <= btnX + btnW &&
-                    my >= btnY && my <= btnY + btnH) {
+            if (mx >= btnX && mx <= btnX + btnWidth &&
+                    my >= btnY && my <= btnY + btnHeight) {
                 System.exit(0);
             }
         }
