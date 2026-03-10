@@ -111,7 +111,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
 
         // Dibujar Proyectiles Jugador
-        g.setColor(Color.BLUE);
+        g.setColor(Color.CYAN);
         for (Proyectil p : proyectiles) {
             g.fillRect((int) p.x, (int) p.y, p.ancho, p.alto);
         }
@@ -369,9 +369,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (pausado && !juegoTerminado) {
             int mx = e.getX();
             int my = e.getY();
-            // Detectar clic en botón SALIR (coordenadas aproximadas basadas en paintComponent)
+            // Detectar clic en botón SALIR (coordenadas aproximadas basadas en
+            // paintComponent)
             if (mx >= getWidth() / 2 - 75 && mx <= getWidth() / 2 + 75 &&
-                my >= getHeight() / 2 + 80 && my <= getHeight() / 2 + 120) {
+                    my >= getHeight() / 2 + 80 && my <= getHeight() / 2 + 120) {
                 System.exit(0);
             }
         }
