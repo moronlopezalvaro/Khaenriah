@@ -130,20 +130,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
 
-            // Dibujar imagen de pausa
-            int imgW = 400; // Ajustar según tamaño deseado
-            int imgH = 200;
-            g.drawImage(imgPausa, getWidth() / 2 - imgW / 2, getHeight() / 2 - imgH / 2 - 50, imgW, imgH, this);
-
-            // Botón Salir
-            g.setColor(Color.RED);
-            g.fillRoundRect(getWidth() / 2 - 75, getHeight() / 2 + 80, 150, 40, 10, 10);
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("SALIR", getWidth() / 2 - 30, getHeight() / 2 + 107);
-
-            g.setFont(new Font("Arial", Font.PLAIN, 16));
-            g.drawString("Pulsa ESC para continuar", getWidth() / 2 - 90, getHeight() / 2 + 150);
+            // Dibujar imagen de pausa nueva (ya incluye los textos y el botón SALIR)
+            int imgW = 600; // Tamaño ampliado para mejor legibilidad
+            int imgH = 450;
+            g.drawImage(imgPausa, getWidth() / 2 - imgW / 2, getHeight() / 2 - imgH / 2, imgW, imgH, this);
         }
     }
 
@@ -369,10 +359,15 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (pausado && !juegoTerminado) {
             int mx = e.getX();
             int my = e.getY();
-            // Detectar clic en botón SALIR (coordenadas aproximadas basadas en
-            // paintComponent)
-            if (mx >= getWidth() / 2 - 75 && mx <= getWidth() / 2 + 75 &&
-                    my >= getHeight() / 2 + 80 && my <= getHeight() / 2 + 120) {
+            // Detectar clic en el botón SALIR de la nueva imagen
+            // (El botón está centrado en la parte inferior del panel)
+            int btnW = 200;
+            int btnH = 60;
+            int btnX = getWidth() / 2 - btnW / 2;
+            int btnY = getHeight() / 2 + 100;
+
+            if (mx >= btnX && mx <= btnX + btnW &&
+                    my >= btnY && my <= btnY + btnH) {
                 System.exit(0);
             }
         }
