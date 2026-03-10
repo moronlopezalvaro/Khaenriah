@@ -1,6 +1,6 @@
 ```mermaid
 
-classDiagram
+classDiagram 
 
 JPanel1Menu --|> JPanel
 JPanel2Juego --|> JPanel
@@ -8,7 +8,7 @@ VentanaMenu --|> JFrame
 VentanaJuego --|> JFrame
 VentanaDialogo --|> JFrame
 
-%%Aquí lo que se utiliza es para agregación o composición
+%%Aquí lo que se utiliza es para agregación o composición%%
 VentanaMenu o-- JPanel1Menu : contiene
 VentanaJuego *-- JPanel2Juego : contiene
 
@@ -18,7 +18,7 @@ JPanel2Juego --> Proyectil : usa
 JPanel2Juego --> Enemigo : usa
 JPanel2Juego --> Jefe : usa
 
-%%Declaración de Clases con sus métodos
+%%Declaración de Clases con sus métodos%%
 class JPanel1Menu{
 - imagenFondo : Image
 + JPanel1Menu()
@@ -26,6 +26,26 @@ class JPanel1Menu{
 }
 
 class JPanel2Juego{
+
+- imagenFondo : Image
+- imgNave : Image
+- imgEnemigo : Image
+- imgBoss : Image
+- imgPausa : Image
+
+- timer : Timer
+- nave : Nave
+- enemigos : List<Enemigo>
+- proyectiles : List<Proyectil>
+- proyectilesBoss : List<Proyectil>
+- boss : Jefe
+
+- nivel : int
+- enemigosAEliminar : int
+- juegoTerminado : boolean
+- victoria : boolean
+- pausado : boolean
+
 + JPanel2Juego()
 - iniciarNivel()
 # paintComponent(g : Graphics)
