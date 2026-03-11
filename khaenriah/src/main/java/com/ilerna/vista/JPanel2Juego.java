@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.*;
 import com.ilerna.modelos.*;
+import javax.sound.sampled.*;
+import java.net.URL;
 
 public class JPanel2Juego extends JPanel implements ActionListener, KeyListener, MouseListener {
     private Image imagenFondo;
@@ -25,6 +27,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Jefe boss;
     private JButton btnPausaMenu;
     private JButton btnPausaSalir;
+    private Clip clipMusica;
 
     private int nivel = 1;
     private int puntuacion = 0;
@@ -95,6 +98,26 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         this.add(btnPausaMenu);
         this.add(btnPausaSalir);
+
+        // Iniciar la música de fondo
+        reproducirMusica("/com/ilerna/resources/musica_arcade.wav");
+    }
+
+    public void reproducirMusica(String ruta) {
+        try {
+            URL url = getClass().getResource(ruta);
+            if (url != null) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
+                clipMusica = AudioSystem.getClip();
+                clipMusica.open(audioStream);
+                clipMusica.loop(Clip.LOOP_CONTINUOUSLY); // Hacer que la música se repita
+                clipMusica.start();
+            } else {
+                System.out.println("No se encontró el archivo de sonido: " + ruta);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al reproducir música: " + e.getMessage());
+        }
     }
 
     private void configurarBotonPausa(JButton btn, int w, int h) {
@@ -108,6 +131,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private void volverAlMenu() {
         if (timer != null) {
             timer.stop();
+        }
+        if (clipMusica != null && clipMusica.isRunning()) {
+            clipMusica.stop();
         }
 
         System.out.println("LOG: Deteniendo timer y preparando nueva VentanaMenu...");
