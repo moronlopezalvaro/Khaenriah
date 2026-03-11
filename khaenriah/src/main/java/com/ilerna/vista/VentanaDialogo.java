@@ -17,6 +17,7 @@ public class VentanaDialogo extends JFrame implements ActionListener {
     public VentanaDialogo() {
         this.setTitle("KHAENRI'AH");
         this.setSize(new Dimension(1080, 720));
+        this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -38,7 +39,7 @@ public class VentanaDialogo extends JFrame implements ActionListener {
         botonSiguiente = new JButton(iconoBoton);
 
         // Ajustar el tamaño del botón al de la imagen reescalada
-        botonSiguiente.setBounds(390, 573, 720, 100);
+        botonSiguiente.setBounds(390, 603, 720, 100);
 
         // Quitar borde y fondo
         botonSiguiente.setBorderPainted(false);

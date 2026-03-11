@@ -19,7 +19,7 @@ public class JPanelDialogo extends JPanel {
         nombrePersonaje = new JLabel("Coloson");
         nombrePersonaje.setFont(new Font("Arial", Font.BOLD, 22));
         nombrePersonaje.setForeground(Color.YELLOW);
-        nombrePersonaje.setBounds(250, 500, 400, 30);
+        nombrePersonaje.setBounds(250, 530, 400, 30);
         this.add(nombrePersonaje);
 
         // Inicializar el área de texto
@@ -38,7 +38,7 @@ public class JPanelDialogo extends JPanel {
         textoDialogo.setWrapStyleWord(true);
 
         // Posicionarlo en el panel (ajusta estos números luego)
-        textoDialogo.setBounds(250, 530, 400, 100);
+        textoDialogo.setBounds(250, 560, 400, 100);
 
         this.add(textoDialogo);
     }

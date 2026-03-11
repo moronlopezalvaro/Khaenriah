@@ -22,6 +22,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
         this.setTitle("KHAENRI'AH");
         this.setSize(new Dimension(1080, 720));
+        this.setUndecorated(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setLayout(null);
@@ -39,7 +40,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
         botonStart = new JButton(iconoStart);
 
         // Ajustar el tamaño del botón al de la imagen reescalada
-        botonStart.setBounds(440, 525, 190, 90);
+        botonStart.setBounds(440, 555, 190, 90);
 
         // Quitar borde y fondo
         botonStart.setBorderPainted(false);

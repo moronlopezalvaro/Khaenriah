@@ -57,7 +57,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             System.out.println("Error al cargar imágenes: " + e.getMessage());
         }
 
-        nave = new Nave(500, 600, 15, 100, 60, 60);
+        nave = new Nave(500, 630, 20, 100, 60, 60);
         enemigos = new ArrayList<>();
         proyectiles = new ArrayList<>();
         proyectilesBoss = new ArrayList<>();
