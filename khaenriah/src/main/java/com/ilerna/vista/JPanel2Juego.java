@@ -27,6 +27,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private JButton btnPausaSalir;
 
     private int nivel = 1;
+    private int puntuacion = 0;
     private int enemigosAEliminar = 10;
     private boolean juegoTerminado = false;
     private boolean victoria = false;
@@ -164,6 +165,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.drawString(msg, getWidth() / 2 - 150, getHeight() / 2);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString("Nivel alcanzado: " + nivel, getWidth() / 2 - 80, getHeight() / 2 + 50);
+            g.drawString("Puntuación Final: " + puntuacion, getWidth() / 2 - 80, getHeight() / 2 + 80);
             return;
         }
 
@@ -187,8 +189,6 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         // Dibujar Proyectiles Jugador
         for (Proyectil p : proyectiles) {
-            // Usar el ImageIcon directamente con un Observer para forzar que avance la
-            // animación
             g.drawImage(iconProyectil.getImage(), (int) p.x, (int) p.y, p.ancho, p.alto,
                     iconProyectil.getImageObserver());
         }
@@ -206,23 +206,11 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (pausado && !juegoTerminado) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
-
-            // Dibujar imagen de pausa nueva (ya incluye los textos y el botón SALIR)
             int imgW = 700;
             int imgH = 350;
             int imgX = getWidth() / 2 - imgW / 2;
             int imgY = getHeight() / 2 - imgH / 2 + 30;
             g.drawImage(imgPausa, imgX, imgY, imgW, imgH, this);
-
-            /*
-             * // DESCOMENTA PARA DEPURAR POSICIÓN DE BOTONES
-             * g.setColor(new Color(255, 0, 0, 100));
-             * int btnWidth = 350;
-             * int btnHeight = 90;
-             * int btnX = getWidth() / 2 - btnWidth / 2;
-             * g.drawRect(btnX, getHeight() / 2 - 50, btnWidth, btnHeight); // Área Menú
-             * g.drawRect(btnX, getHeight() / 2 + 70, btnWidth, btnHeight); // Área Salir
-             */
         }
     }
 
@@ -250,6 +238,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         } else {
             g.drawString("¡BATALLA FINAL!", getWidth() - 150, 100);
         }
+
+        // Puntuación
+        g.setColor(Color.YELLOW);
+        g.drawString("PUNTOS: " + puntuacion, 20, 115);
     }
 
     @Override
@@ -305,7 +297,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         Iterator<Proyectil> itB = proyectilesBoss.iterator();
         while (itB.hasNext()) {
             Proyectil p = itB.next();
-            p.mover(); // Moverá hacia abajo si velocidad es negativa
+            p.mover();
             if (p.y > getHeight() + 100)
                 itB.remove();
         }
@@ -390,20 +382,25 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             Rectangle rectP = p.getBounds();
             boolean hit = false;
 
-            for (Enemigo e : enemigos) {
+            Iterator<Enemigo> itEnemigo = enemigos.iterator();
+            while (itEnemigo.hasNext()) {
+                Enemigo e = itEnemigo.next();
                 if (rectP.intersects(e.getBounds())) {
-                    enemigos.remove(e);
+                    itEnemigo.remove();
+                    puntuacion += 10; // Sumar puntos por enemigo eliminado
                     hit = true;
                     break;
                 }
             }
-
+ 
             if (!hit && boss != null && rectP.intersects(boss.getBounds())) {
                 boss.vida -= 7;
+                puntuacion += 5; // Sumar puntos por impacto al boss
                 hit = true;
                 if (boss.vida <= 0) {
                     juegoTerminado = true;
                     victoria = true;
+                    puntuacion += 1000; // Bonus por derrotar al boss
                 }
             }
 
@@ -452,7 +449,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
             btnPausaMenu.setText("");
             btnPausaMenu.setBorder(null);
-            
+
             btnPausaSalir.setText("");
             btnPausaSalir.setBorder(null);
 
