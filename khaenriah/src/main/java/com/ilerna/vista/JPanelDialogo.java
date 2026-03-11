@@ -12,7 +12,7 @@ public class JPanelDialogo extends JPanel {
     public JPanelDialogo() {
         this.setLayout(null);
         // Cargar la imagen solo una vez
-        ImageIcon icon = new ImageIcon(getClass().getResource("/com/ilerna/resources/dialogocoloson.jpg"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/com/ilerna/resources/colosonplanetadentro.jpg"));
         imagenFondo = icon.getImage();
 
         // Inicializar el nombre del personaje

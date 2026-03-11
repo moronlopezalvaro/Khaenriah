@@ -55,50 +55,59 @@ public class VentanaDialogo extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonSiguiente) {
             if (estadoDialogo == 0) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogochampi.jpg");
+                panel.setImagenFondo("/com/ilerna/resources/champiplanetadentro.jpg");
                 panel.setNombre("Champi");
-                panel.setTexto("Hola, soy Champi, piloto de élite de la Patrulla.");
+                panel.setTexto("Hola, soy Champi, piloto de élite de la Patrulla Galáctica.");
                 estadoDialogo++;
             } else if (estadoDialogo == 1) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogocoloson.jpg");
+                panel.setImagenFondo("/com/ilerna/resources/colosonplanetadentro.jpg");
                 panel.setNombre("Coloson");
                 panel.setTexto(
                         "Hola, soy Coloson, mi planeta Khaenri'ah está siendo atacado por el malvado conquistador Zaroth.");
                 estadoDialogo++;
             } else if (estadoDialogo == 2) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogochampi.jpg");
+                panel.setImagenFondo("/com/ilerna/resources/champi2planetadentro.jpg");
+                panel.setNombre("Champi");
+                panel.setTexto("¿Eh?... ¿Zaroth?...");
+                estadoDialogo++;
+            } else if (estadoDialogo == 3) {
+                panel.setImagenFondo("/com/ilerna/resources/champiplanetadentro.jpg");
                 panel.setNombre("Champi");
                 panel.setTexto("Tranquilo Coloson, dejas el trabajo en manos del mejor piloto de la galaxia.");
                 estadoDialogo++;
-            } else if (estadoDialogo == 3) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogocoloson.jpg");
+            } else if (estadoDialogo == 4) {
+                panel.setImagenFondo("/com/ilerna/resources/coloson2planetadentro.jpg");
                 panel.setNombre("Coloson");
                 panel.setTexto("Gracias Champi, suerte en tu aventura.");
                 estadoDialogo++;
-            } else if (estadoDialogo == 4) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogochampi.jpg");
-                panel.setNombre("Champi");
-                panel.setTexto("Zaroth, he venido a acabar con tu maldita tiranía.");
-                estadoDialogo++;
             } else if (estadoDialogo == 5) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogozaroth.jpg");
+                panel.setImagenFondo("/com/ilerna/resources/khaenriah.jpg");
+                panel.setNombre("Khaenri'ah");
+                panel.setTexto("• Sector: Sector Fronterizo Z-9.\n" + "• Sistema Estelar: Sistema Binario de Kálix.\n"
+                        + "• Ubicación: borde exterior del Cinturón de Ónice.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 6) {
+                panel.setImagenFondo("/com/ilerna/resources/champiplanetafuera.jpg");
+                panel.setNombre("Champi");
+                panel.setTexto("¡Zaroth! He venido a acabar con tu maldita tiranía.");
+                estadoDialogo++;
+            } else if (estadoDialogo == 7) {
+                panel.setImagenFondo("/com/ilerna/resources/zarothplanetafuera.jpg");
                 panel.setNombre("Zaroth");
                 panel.setTexto(
                         "JAJAJAJA, MALDITO PATRULLERO GALÁCTICO, ACABARÉ CONTIGO COMO TODOS LOS QUE HAN INTENTADO DETENERME.");
                 estadoDialogo++;
-            } else if (estadoDialogo == 6) {
-                panel.setImagenFondo("/com/ilerna/resources/dialogozaroth.jpg");
+            } else if (estadoDialogo == 8) {
+                panel.setImagenFondo("/com/ilerna/resources/zaroth2planetafuera.jpg");
                 panel.setNombre("Zaroth");
                 panel.setTexto("GEOCENTINELAS, ACABAD CON ESTE DESCEREBRADO PILOTO.");
                 estadoDialogo++;
-            } else if (estadoDialogo == 7) {
-
-                panel.setImagenFondo("/com/ilerna/resources/dialogogeocentinela.jpg");
+            } else if (estadoDialogo == 9) {
+                panel.setImagenFondo("/com/ilerna/resources/geocentinelaplanetafuera.jpg");
                 panel.setNombre("Geocentinelas");
                 panel.setTexto("СОРАЙЯ, ОДОБРИ НАС!!!");
                 estadoDialogo++;
             } else {
-
                 new VentanaJuego();
                 this.dispose();
             }
