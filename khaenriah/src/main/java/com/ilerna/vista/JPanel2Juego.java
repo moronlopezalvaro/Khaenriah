@@ -17,6 +17,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgEnemigo;
     private Image imgBoss;
     private Image imgPausa;
+    private Image imgFinal;
     private ImageIcon iconProyectil;
 
     private Timer timer;
@@ -27,6 +28,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Jefe boss;
     private JButton btnPausaMenu;
     private JButton btnPausaSalir;
+    private JButton btnFinalReiniciar;
+    private JButton btnFinalSalir;
     private Clip clipMusica;
 
     private int nivel = 1;
@@ -54,6 +57,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgEnemigo = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinela.png")).getImage();
             imgBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/bossFinal.png")).getImage();
             imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/MenuPausa.png")).getImage();
+            imgFinal = new ImageIcon(getClass().getResource("/com/ilerna/resources/botones_final.png")).getImage();
 
             // Mantener como ImageIcon en lugar de extraer la Image directamente ayuda a
             // conservar la animación original a su velocidad
@@ -98,6 +102,30 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         this.add(btnPausaMenu);
         this.add(btnPausaSalir);
+
+        // Inicializar botones de fin de juego
+        btnFinalReiniciar = new JButton();
+        btnFinalSalir = new JButton();
+
+        configurarBotonPausa(btnFinalReiniciar, 150, 70);
+        configurarBotonPausa(btnFinalSalir, 150, 70);
+
+        btnFinalReiniciar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reiniciarJuego();
+            }
+        });
+
+        btnFinalSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        this.add(btnFinalReiniciar);
+        this.add(btnFinalSalir);
 
         // Iniciar la música de fondo
         reproducirMusica("/com/ilerna/resources/musica_arcade.wav");
@@ -185,7 +213,22 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 
         if (juegoTerminado) {
-            return; // No dibujamos el texto antiguo, el menú lo manejará
+            g.setColor(new Color(0, 0, 0, 150));
+            g.fillRect(0, 0, getWidth(), getHeight());
+            
+            int imgW = 700;
+            int imgH = 350;
+            int imgX = getWidth() / 2 - imgW / 2;
+            int imgY = getHeight() / 2 - imgH / 2;
+            
+            g.drawImage(imgFinal, imgX, imgY, imgW, imgH, this);
+            
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 40));
+            String msg = victoria ? "¡VICTORIA FINAL!" : "GAME OVER";
+            g.drawString(msg, getWidth() / 2 - 150, imgY - 30);
+            
+            return;
         }
 
         // Dibujar Nave
@@ -267,7 +310,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     public void actionPerformed(ActionEvent e) {
         if (juegoTerminado) {
             timer.stop();
-            mostrarMenuFinJuego();
+            actualizarVisibilidadBotonesFinal();
             return;
         }
         
@@ -540,28 +583,21 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     public void mouseReleased(MouseEvent e) {
     }
 
-    private void mostrarMenuFinJuego() {
-        String titulo = victoria ? "¡VICTORIA!" : "GAME OVER";
-        String mensaje = (victoria ? "¡Has salvado a Khaenri'ah!" : "Tu nave ha sido destruida.")
-                + "\nNivel alcanzado: " + nivel
-                + "\nPuntuación final: " + puntuacion
-                + "\n\n¿Qué deseas hacer?";
+    private void actualizarVisibilidadBotonesFinal() {
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
 
-        Object[] opciones = { "Reiniciar", "Salir" };
-        int n = JOptionPane.showOptionDialog(this,
-                mensaje,
-                titulo,
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                opciones,
-                opciones[0]);
+        // Ajustar posiciones según el diseño de botones_final.png
+        // Asumiendo que "Reiniciar" está a la izquierda y "Salir" a la derecha
+        btnFinalReiniciar.setBounds(centerX - 240, centerY + 30, 200, 80);
+        btnFinalSalir.setBounds(centerX + 40, centerY + 30, 200, 80);
 
-        if (n == JOptionPane.YES_OPTION) {
-            reiniciarJuego();
-        } else {
-            System.exit(0);
-        }
+        btnFinalReiniciar.setVisible(true);
+        btnFinalSalir.setVisible(true);
+
+        this.setComponentZOrder(btnFinalReiniciar, 0);
+        this.setComponentZOrder(btnFinalSalir, 1);
+        this.repaint();
     }
 
     private void reiniciarJuego() {
@@ -572,6 +608,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         nave.vida = 100;
         nave.x = 500;
         nave.y = 630;
+        
+        btnFinalReiniciar.setVisible(false);
+        btnFinalSalir.setVisible(false);
+        
         iniciarNivel();
         if (timer != null) {
             timer.start();
