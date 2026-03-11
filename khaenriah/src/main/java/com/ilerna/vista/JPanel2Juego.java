@@ -215,19 +215,19 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (juegoTerminado) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, getWidth(), getHeight());
-            
+
             int imgW = 700;
             int imgH = 350;
             int imgX = getWidth() / 2 - imgW / 2;
             int imgY = getHeight() / 2 - imgH / 2;
-            
+
             g.drawImage(imgFinal, imgX, imgY, imgW, imgH, this);
-            
+
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 40));
             String msg = victoria ? "¡VICTORIA FINAL!" : "GAME OVER";
             g.drawString(msg, getWidth() / 2 - 150, imgY - 30);
-            
+
             return;
         }
 
@@ -313,7 +313,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             actualizarVisibilidadBotonesFinal();
             return;
         }
-        
+
         if (pausado) {
             repaint(); // Seguimos repintando para ver el menú de pausa
             return;
@@ -588,11 +588,19 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         int centerY = getHeight() / 2;
 
         // Ajustar posiciones según el diseño de botones_final.png
-        // Asumiendo que "Reiniciar" está a la izquierda y "Salir" a la derecha
-        btnFinalReiniciar.setBounds(centerX - 240, centerY + 30, 200, 80);
-        btnFinalSalir.setBounds(centerX + 40, centerY + 30, 200, 80);
+        // "Salir" está a la izquierda y "Reiniciar" a la derecha
+        btnFinalSalir.setBounds(centerX - 150, centerY + 50, 150, 70);
+        btnFinalReiniciar.setBounds(centerX + 25, centerY + 50, 150, 70);
 
+        // Hacerlos invisibles (transparentes)
+        btnFinalReiniciar.setContentAreaFilled(false);
+        btnFinalReiniciar.setBorderPainted(false);
+        btnFinalReiniciar.setBorder(null);
         btnFinalReiniciar.setVisible(true);
+
+        btnFinalSalir.setContentAreaFilled(false);
+        btnFinalSalir.setBorderPainted(false);
+        btnFinalSalir.setBorder(null);
         btnFinalSalir.setVisible(true);
 
         this.setComponentZOrder(btnFinalReiniciar, 0);
@@ -608,10 +616,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         nave.vida = 100;
         nave.x = 500;
         nave.y = 630;
-        
+
         btnFinalReiniciar.setVisible(false);
         btnFinalSalir.setVisible(false);
-        
+
         iniciarNivel();
         if (timer != null) {
             timer.start();
