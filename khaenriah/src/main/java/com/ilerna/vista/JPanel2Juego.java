@@ -317,6 +317,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             e.y += e.velocidad;
             if (e.y > getHeight()) {
                 nave.vida -= 3;
+                puntuacion -= 1;
                 it.remove();
             }
         }
@@ -387,12 +388,12 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 Enemigo e = itEnemigo.next();
                 if (rectP.intersects(e.getBounds())) {
                     itEnemigo.remove();
-                    puntuacion += 10; // Sumar puntos por enemigo eliminado
+                    puntuacion += 2; // Sumar puntos por enemigo eliminado
                     hit = true;
                     break;
                 }
             }
- 
+
             if (!hit && boss != null && rectP.intersects(boss.getBounds())) {
                 boss.vida -= 7;
                 puntuacion += 5; // Sumar puntos por impacto al boss
