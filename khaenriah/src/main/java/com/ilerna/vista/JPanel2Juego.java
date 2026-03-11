@@ -27,8 +27,6 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Jefe boss;
     private JButton btnPausaMenu;
     private JButton btnPausaSalir;
-    private JButton btnFinReiniciar;
-    private JButton btnFinSalir;
     private Clip clipMusica;
 
     private int nivel = 1;
@@ -101,76 +99,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         this.add(btnPausaMenu);
         this.add(btnPausaSalir);
 
-        // Inicializar botones de Fin de Juego
-        btnFinReiniciar = new JButton("REINICIAR");
-        btnFinSalir = new JButton("SALIR");
-        
-        configurarBotonFin(btnFinReiniciar);
-        configurarBotonFin(btnFinSalir);
-
-        btnFinReiniciar.addActionListener(e -> reiniciarJuego());
-        btnFinSalir.addActionListener(e -> System.exit(0));
-
-        this.add(btnFinReiniciar);
-        this.add(btnFinSalir);
-
         // Iniciar la música de fondo
         reproducirMusica("/com/ilerna/resources/musica_arcade.wav");
-    }
-
-    private void configurarBotonFin(JButton btn) {
-        btn.setSize(200, 60);
-        btn.setFont(new Font("Arial", Font.BOLD, 20));
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(new Color(0, 0, 0, 180));
-        btn.setFocusPainted(false);
-        btn.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-        btn.setVisible(false);
-    }
-
-    private void reiniciarJuego() {
-        nivel = 1;
-        puntuacion = 0;
-        juegoTerminado = false;
-        victoria = false;
-        pausado = false;
-        nave.vida = 100;
-        nave.x = 500;
-        cooldownDisparo = 0;
-        
-        enemigos.clear();
-        proyectiles.clear();
-        proyectilesBoss.clear();
-        
-        iniciarNivel();
-        
-        btnFinReiniciar.setVisible(false);
-        btnFinSalir.setVisible(false);
-        
-        if (clipMusica != null) {
-            clipMusica.stop();
-            clipMusica.setFramePosition(0);
-            clipMusica.start();
-        }
-    }
-
-    private void actualizarVisibilidadBotonesFinal() {
-        if (juegoTerminado) {
-            int centerX = getWidth() / 2;
-            int centerY = getHeight() / 2 + 100;
-
-            btnFinReiniciar.setBounds(centerX - 210, centerY, 200, 60);
-            btnFinSalir.setBounds(centerX + 10, centerY, 200, 60);
-
-            btnFinReiniciar.setVisible(true);
-            btnFinSalir.setVisible(true);
-
-            this.setComponentZOrder(btnFinReiniciar, 0);
-            this.setComponentZOrder(btnFinSalir, 1);
-        } else {
-            btnFinReiniciar.setVisible(false);
-            btnFinSalir.setVisible(false);
-        }
     }
 
     public void reproducirMusica(String ruta) {
@@ -342,14 +272,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (juegoTerminado) {
-            actualizarVisibilidadBotonesFinal();
-            repaint();
-            return;
-        }
-        
-        if (pausado) {
-            repaint();
+        if (juegoTerminado || pausado) {
+            repaint(); // Seguimos repintando para ver el menú de pausa
             return;
         }
 
@@ -367,7 +291,6 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (nave.vida <= 0) {
             juegoTerminado = true;
             victoria = false;
-            if (clipMusica != null) clipMusica.stop();
         }
 
         repaint();
@@ -504,8 +427,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 if (boss.vida <= 0) {
                     juegoTerminado = true;
                     victoria = true;
-                    puntuacion += 1000;
-                    if (clipMusica != null) clipMusica.stop();
+                    puntuacion += 1000; // Bonus por derrotar al boss
                 }
             }
 
