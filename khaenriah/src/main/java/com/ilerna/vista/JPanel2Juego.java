@@ -513,13 +513,17 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             int centerY = getHeight() / 2 + 30; // Ajuste por el desplazamiento de la imagen
 
             // MANTENEMOS TUS POSICIONES PERO QUITAMOS EL DEPURADOR
-            btnPausaMenu.setBounds(centerX - 40, centerY + 65, 150, 70);
-            btnPausaSalir.setBounds(centerX - 70, centerY + 65, 150, 70);
+            btnPausaMenu.setBounds(centerX - 20, centerY + 65, 150, 70);
+            btnPausaSalir.setBounds(centerX - 185, centerY + 65, 150, 70);
 
             btnPausaMenu.setText("");
+            btnPausaMenu.setContentAreaFilled(false);
+            btnPausaMenu.setBorderPainted(false);
             btnPausaMenu.setBorder(null);
 
             btnPausaSalir.setText("");
+            btnPausaSalir.setContentAreaFilled(false);
+            btnPausaSalir.setBorderPainted(false);
             btnPausaSalir.setBorder(null);
 
             btnPausaMenu.setVisible(true);
@@ -528,8 +532,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             this.setComponentZOrder(btnPausaMenu, 0);
             this.setComponentZOrder(btnPausaSalir, 1);
         } else {
-            btnPausaMenu.setVisible(false);
-            btnPausaSalir.setVisible(false);
+            btnPausaMenu.setVisible(true);
+            btnPausaSalir.setVisible(true);
         }
         this.repaint();
     }
