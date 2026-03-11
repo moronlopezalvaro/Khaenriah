@@ -23,6 +23,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private List<Proyectil> proyectiles;
     private List<Proyectil> proyectilesBoss;
     private Jefe boss;
+    private JButton btnPausaMenu;
+    private JButton btnPausaSalir;
 
     private int nivel = 1;
     private int enemigosAEliminar = 10;
@@ -66,6 +68,74 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         timer.start();
 
         iniciarNivel();
+
+        // Inicializar botones de pausa (transparentes para superponer a la imagen)
+        btnPausaMenu = new JButton();
+        btnPausaSalir = new JButton();
+
+        configurarBotonPausa(btnPausaMenu, 350, 100);
+        configurarBotonPausa(btnPausaSalir, 300, 80);
+
+        btnPausaMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("BOTÓN MENÚ PULSADO - INICIANDO TRANSICIÓN");
+                volverAlMenu();
+            }
+        });
+
+        btnPausaSalir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("BOTÓN SALIR PULSADO - CERRANDO APP");
+                System.exit(0);
+            }
+        });
+
+        this.add(btnPausaMenu);
+        this.add(btnPausaSalir);
+    }
+
+    private void configurarBotonPausa(JButton btn, int w, int h) {
+        btn.setSize(w, h);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setVisible(false);
+    }
+
+    private void volverAlMenu() {
+        if (timer != null) {
+            timer.stop();
+        }
+
+        System.out.println("LOG: Deteniendo timer y preparando nueva VentanaMenu...");
+
+        // Ejecutamos en el Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // 1. Crear e instanciar el menú
+                VentanaMenu menu = new VentanaMenu();
+                menu.setVisible(true);
+                System.out.println("LOG: VentanaMenu creada y visible.");
+
+                // 2. Esperar un breve instante antes de cerrar la actual (usando un Timer de
+                // Swing)
+                Timer delayDispose = new Timer(200, event -> {
+                    Window win = SwingUtilities.getWindowAncestor(this);
+                    if (win != null) {
+                        System.out.println("LOG: Cerrando ventana de juego antigua.");
+                        win.dispose();
+                    }
+                });
+                delayDispose.setRepeats(false);
+                delayDispose.start();
+
+            } catch (Exception ex) {
+                System.err.println("ERROR CRÍTICO EN TRANSICIÓN: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        });
     }
 
     private void iniciarNivel() {
@@ -138,16 +208,28 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.fillRect(0, 0, getWidth(), getHeight());
 
             // Dibujar imagen de pausa nueva (ya incluye los textos y el botón SALIR)
-            int imgW = 700; // Tamaño ampliado para mejor legibilidad
+            int imgW = 700;
             int imgH = 350;
-            g.drawImage(imgPausa, getWidth() / 2 - imgW / 2, getHeight() / 2 - imgH / 2, imgW, imgH, this);
+            int imgX = getWidth() / 2 - imgW / 2;
+            int imgY = getHeight() / 2 - imgH / 2 + 30;
+            g.drawImage(imgPausa, imgX, imgY, imgW, imgH, this);
+
+            /*
+             * // DESCOMENTA PARA DEPURAR POSICIÓN DE BOTONES
+             * g.setColor(new Color(255, 0, 0, 100));
+             * int btnWidth = 350;
+             * int btnHeight = 90;
+             * int btnX = getWidth() / 2 - btnWidth / 2;
+             * g.drawRect(btnX, getHeight() / 2 - 50, btnWidth, btnHeight); // Área Menú
+             * g.drawRect(btnX, getHeight() / 2 + 70, btnWidth, btnHeight); // Área Salir
+             */
         }
     }
 
     private void dibujarHUD(Graphics g) {
         // Barra de vida jugador
         g.setColor(Color.GRAY);
-        g.fillRect(20, 20, 200, 20);
+        g.fillRect(20, 50, 200, 20);
         if (nave.vida <= 30) {
             g.setColor(Color.RED);
         } else if (nave.vida <= 60) {
@@ -155,18 +237,18 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         } else {
             g.setColor(Color.GREEN);
         }
-        g.fillRect(20, 20, nave.vida * 2, 20);
+        g.fillRect(20, 50, nave.vida * 2, 20);
         g.setColor(Color.WHITE);
-        g.drawRect(20, 20, 200, 20);
-        g.drawString("VIDA: " + nave.vida, 20, 55);
+        g.drawRect(20, 50, 200, 20);
+        g.drawString("VIDA: " + nave.vida, 20, 85);
 
         // Nivel
         g.setFont(new Font("Arial", Font.BOLD, 18));
-        g.drawString("NIVEL: " + nivel, getWidth() - 150, 40);
+        g.drawString("NIVEL: " + nivel, getWidth() - 150, 70);
         if (nivel < 10) {
-            g.drawString("RESTANTES: " + enemigosAEliminar, getWidth() - 150, 70);
+            g.drawString("RESTANTES: " + enemigosAEliminar, getWidth() - 150, 100);
         } else {
-            g.drawString("¡BATALLA FINAL!", getWidth() - 150, 70);
+            g.drawString("¡BATALLA FINAL!", getWidth() - 150, 100);
         }
     }
 
@@ -355,7 +437,35 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         if (key == KeyEvent.VK_ESCAPE) {
             pausado = !pausado;
+            actualizarVisibilidadBotonesPausa();
         }
+    }
+
+    private void actualizarVisibilidadBotonesPausa() {
+        if (pausado) {
+            int centerX = getWidth() / 2;
+            int centerY = getHeight() / 2 + 30; // Ajuste por el desplazamiento de la imagen
+
+            // MANTENEMOS TUS POSICIONES PERO QUITAMOS EL DEPURADOR
+            btnPausaMenu.setBounds(centerX - 40, centerY + 65, 150, 70);
+            btnPausaSalir.setBounds(centerX - 70, centerY + 65, 150, 70);
+
+            btnPausaMenu.setText("");
+            btnPausaMenu.setBorder(null);
+            
+            btnPausaSalir.setText("");
+            btnPausaSalir.setBorder(null);
+
+            btnPausaMenu.setVisible(true);
+            btnPausaSalir.setVisible(true);
+
+            this.setComponentZOrder(btnPausaMenu, 0);
+            this.setComponentZOrder(btnPausaSalir, 1);
+        } else {
+            btnPausaMenu.setVisible(false);
+            btnPausaSalir.setVisible(false);
+        }
+        this.repaint();
     }
 
     @Override
@@ -369,30 +479,14 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (pausado && !juegoTerminado) {
-            int mx = e.getX();
-            int my = e.getY();
-            // Detectar clic en el botón SALIR de la nueva imagen
-            // (El botón está centrado en la parte inferior del panel)
-            int btnWidth = 300;
-            int btnHeight = 80;
-            int btnX = getWidth() / 2 - btnWidth / 2;
-            int btnY = getHeight() / 2 + 60;
-
-            if (mx >= btnX && mx <= btnX + btnWidth &&
-                    my >= btnY && my <= btnY + btnHeight) {
-                System.exit(0);
-            }
-        }
-        if (e.getButton() == MouseEvent.BUTTON1 && !pausado) {
-            disparo();
-        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            disparo();
+            if (!pausado && !juegoTerminado) {
+                disparo();
+            }
         }
     }
 

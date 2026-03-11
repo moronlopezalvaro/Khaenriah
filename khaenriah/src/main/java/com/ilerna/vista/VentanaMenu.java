@@ -24,7 +24,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
         this.setSize(new Dimension(1080, 720));
         this.setUndecorated(true);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         panel.setLayout(null);
 
         // Cargar la imagen original
