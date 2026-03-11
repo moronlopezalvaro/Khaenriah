@@ -185,14 +185,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 
         if (juegoTerminado) {
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 50));
-            String msg = victoria ? "¡VICTORIA FINAL!" : "GAME OVER";
-            g.drawString(msg, getWidth() / 2 - 150, getHeight() / 2);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("Nivel alcanzado: " + nivel, getWidth() / 2 - 80, getHeight() / 2 + 50);
-            g.drawString("Puntuación Final: " + puntuacion, getWidth() / 2 - 80, getHeight() / 2 + 80);
-            return;
+            return; // No dibujamos el texto antiguo, el menú lo manejará
         }
 
         // Dibujar Nave
@@ -272,7 +265,13 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (juegoTerminado || pausado) {
+        if (juegoTerminado) {
+            timer.stop();
+            mostrarMenuFinJuego();
+            return;
+        }
+        
+        if (pausado) {
             repaint(); // Seguimos repintando para ver el menú de pausa
             return;
         }
@@ -539,5 +538,44 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     @Override
     public void mouseReleased(MouseEvent e) {
+    }
+
+    private void mostrarMenuFinJuego() {
+        String titulo = victoria ? "¡VICTORIA!" : "GAME OVER";
+        String mensaje = (victoria ? "¡Has salvado a Khaenri'ah!" : "Tu nave ha sido destruida.")
+                + "\nNivel alcanzado: " + nivel
+                + "\nPuntuación final: " + puntuacion
+                + "\n\n¿Qué deseas hacer?";
+
+        Object[] opciones = { "Reiniciar", "Salir" };
+        int n = JOptionPane.showOptionDialog(this,
+                mensaje,
+                titulo,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones,
+                opciones[0]);
+
+        if (n == JOptionPane.YES_OPTION) {
+            reiniciarJuego();
+        } else {
+            System.exit(0);
+        }
+    }
+
+    private void reiniciarJuego() {
+        nivel = 1;
+        puntuacion = 0;
+        juegoTerminado = false;
+        victoria = false;
+        nave.vida = 100;
+        nave.x = 500;
+        nave.y = 630;
+        iniciarNivel();
+        if (timer != null) {
+            timer.start();
+        }
+        repaint();
     }
 }
