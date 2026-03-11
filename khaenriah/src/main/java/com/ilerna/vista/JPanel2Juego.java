@@ -16,6 +16,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgNave;
     private Image imgEnemigo;
     private Image imgBoss;
+    private Image imgBalaBoss;
     private Image imgPausa;
     private Image imgFinal;
     private ImageIcon iconProyectil;
@@ -56,6 +57,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgNave = new ImageIcon(getClass().getResource("/com/ilerna/resources/nave.png")).getImage();
             imgEnemigo = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinela.png")).getImage();
             imgBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/bossFinal.png")).getImage();
+            imgBalaBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/BalaBoss.png")).getImage();
             imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/MenuPausa.png")).getImage();
             imgFinal = new ImageIcon(getClass().getResource("/com/ilerna/resources/botones_final.png")).getImage();
 
@@ -256,9 +258,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
 
         // Dibujar Proyectiles Boss
-        g.setColor(Color.RED);
         for (Proyectil p : proyectilesBoss) {
-            g.fillRect((int) p.x, (int) p.y, p.ancho, p.alto);
+            g.drawImage(imgBalaBoss, (int) p.x, (int) p.y, p.ancho, p.alto, this);
         }
 
         // Interfaz de Usuario (HUD)
@@ -426,7 +427,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
             // Disparo del Boss
             if (random.nextInt(30) == 0) {
-                proyectilesBoss.add(new Proyectil(boss.x + (boss.ancho / 2) - 5, boss.y + boss.alto, -20, 10, 20));
+                proyectilesBoss.add(new Proyectil(boss.x + (boss.ancho / 2) - 20, boss.y + boss.alto, -20, 40, 40));
             }
         }
     }
