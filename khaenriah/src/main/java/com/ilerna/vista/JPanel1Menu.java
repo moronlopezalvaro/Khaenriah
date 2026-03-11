@@ -11,7 +11,7 @@ public class JPanel1Menu extends JPanel {
     public JPanel1Menu() {
         this.setLayout(null);
         // Cargar la imagen solo una vez
-        ImageIcon icon = new ImageIcon(getClass().getResource("/com/ilerna/resources/Menu.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/com/ilerna/resources/portada.jpg"));
         imagenFondo = icon.getImage();
     }
 
