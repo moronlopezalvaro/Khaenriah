@@ -393,9 +393,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     private void actualizarEnemigos() {
         // Spawn de enemigos
-        if (nivel < 10 && enemigosAEliminar > 0 && random.nextInt(100) < (2 + nivel)) {
+        if (nivel < 10 && enemigosAEliminar > 0 && random.nextInt(100) < (4 + nivel)) {
             int extraVel = nivel / 2;
-            enemigos.add(new Enemigo(random.nextInt(getWidth() - 60), -50, 3 + extraVel, 50, 50));
+            enemigos.add(new Enemigo(random.nextInt(getWidth() - 60), -50, 4 + extraVel, 50, 50));
             enemigosAEliminar--;
         }
 
