@@ -372,6 +372,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         if (disparo) {
             disparo();
+
         }
         if (cooldownDisparo > 0)
             cooldownDisparo--;
