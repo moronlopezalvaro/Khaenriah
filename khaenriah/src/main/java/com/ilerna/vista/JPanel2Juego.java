@@ -20,6 +20,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgPausa;
     private Image imgFinal;
     private Image imgGameOver;
+    private Image imgVictoria;
     private ImageIcon iconProyectil;
 
     private Timer timer;
@@ -62,6 +63,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/MenuPausa.png")).getImage();
             imgFinal = new ImageIcon(getClass().getResource("/com/ilerna/resources/botones_final.png")).getImage();
             imgGameOver = new ImageIcon(getClass().getResource("/com/ilerna/resources/GameOver.jpg")).getImage();
+            imgVictoria = new ImageIcon(getClass().getResource("/com/ilerna/resources/Victoria.jpg")).getImage();
 
             // Mantener como ImageIcon en lugar de extraer la Image directamente ayuda a
             // conservar la animación original a su velocidad
@@ -217,7 +219,11 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 
         if (juegoTerminado) {
-            g.drawImage(imgGameOver, 0, 0, getWidth(), getHeight(), this);
+            if (victoria) {
+                g.drawImage(imgVictoria, 0, 0, getWidth(), getHeight(), this);
+            } else {
+                g.drawImage(imgGameOver, 0, 0, getWidth(), getHeight(), this);
+            }
 
             int imgW = 700;
             int imgH = 350;
@@ -236,6 +242,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             String strPuntuacion = "PUNTUACIÓN: " + puntuacion;
             FontMetrics fmPuntos = g.getFontMetrics();
             g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY + 210);
+
+            clipMusica.stop();
 
             return;
         }
@@ -281,7 +289,11 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             int imgX = getWidth() / 2 - imgW / 2;
             int imgY = getHeight() / 2 - imgH / 2 + 30;
             g.drawImage(imgPausa, imgX, imgY, imgW, imgH, this);
+            clipMusica.stop();
+        } else {
+            clipMusica.start();
         }
+
     }
 
     private void dibujarHUD(Graphics g) {
