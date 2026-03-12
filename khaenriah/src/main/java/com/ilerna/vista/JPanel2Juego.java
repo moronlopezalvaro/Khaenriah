@@ -19,6 +19,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgBalaBoss;
     private Image imgPausa;
     private Image imgFinal;
+    private Image imgGameOver;
     private ImageIcon iconProyectil;
 
     private Timer timer;
@@ -60,6 +61,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgBalaBoss = new ImageIcon(getClass().getResource("/com/ilerna/resources/BalaBoss.png")).getImage();
             imgPausa = new ImageIcon(getClass().getResource("/com/ilerna/resources/MenuPausa.png")).getImage();
             imgFinal = new ImageIcon(getClass().getResource("/com/ilerna/resources/botones_final.png")).getImage();
+            imgGameOver = new ImageIcon(getClass().getResource("/com/ilerna/resources/GameOver.jpg")).getImage();
 
             // Mantener como ImageIcon en lugar de extraer la Image directamente ayuda a
             // conservar la animación original a su velocidad
@@ -215,26 +217,25 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
 
         if (juegoTerminado) {
-            g.setColor(new Color(0, 0, 0, 150));
-            g.fillRect(0, 0, getWidth(), getHeight());
+            g.drawImage(imgGameOver, 0, 0, getWidth(), getHeight(), this);
 
             int imgW = 700;
             int imgH = 350;
             int imgX = getWidth() / 2 - imgW / 2;
-            int imgY = getHeight() / 2 - imgH / 2;
+            int imgY = getHeight() / 2 - imgH / 2 + 150;
 
             g.drawImage(imgFinal, imgX, imgY, imgW, imgH, this);
 
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 40));
+            g.setFont(new Font("Arial", Font.BOLD, 18));
             String msg = victoria ? "HAS SALVADO A KHAENRI'AH" : "INTENTALO DE NUEVO";
             FontMetrics fm = g.getFontMetrics();
-            g.drawString(msg, getWidth() / 2 - fm.stringWidth(msg) / 2, imgY - 60);
+            g.drawString(msg, getWidth() / 2 - fm.stringWidth(msg) / 2, imgY + 180);
 
-            g.setFont(new Font("Arial", Font.BOLD, 30));
+            g.setFont(new Font("Arial", Font.BOLD, 14));
             String strPuntuacion = "PUNTUACIÓN: " + puntuacion;
             FontMetrics fmPuntos = g.getFontMetrics();
-            g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY - 20);
+            g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY + 210);
 
             return;
         }
@@ -596,7 +597,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
     private void actualizarVisibilidadBotonesFinal() {
         int centerX = getWidth() / 2;
-        int centerY = getHeight() / 2;
+        int centerY = getHeight() / 2 + 150;
 
         // Ajustar posiciones según el diseño de botones_final.png
         // "Salir" está a la izquierda y "Reiniciar" a la derecha
