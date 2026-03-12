@@ -41,6 +41,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private int indiceClipActual = 0;
     private Clip[] clipsExplosion = new Clip[5];
     private int indiceClipExplosion = 0;
+    private Clip clipGameOver;
+    private boolean gameOverReproducido = false;
 
     private int nivel = 1;
     private int puntuacion = 0;
@@ -132,6 +134,17 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 System.out.println("LOG: Clips de explosión cargados.");
             } else {
                 System.out.println("LOG: ¡No se encontró Explosion.wav!");
+            }
+
+            // Cargar clip Game Over
+            URL urlGameOver = getClass().getResource("/com/ilerna/resources/GameOver.wav");
+            if (urlGameOver != null) {
+                AudioInputStream audioGameOver = AudioSystem.getAudioInputStream(urlGameOver);
+                clipGameOver = AudioSystem.getClip();
+                clipGameOver.open(audioGameOver);
+                System.out.println("LOG: Clip Game Over cargado.");
+            } else {
+                System.out.println("LOG: ¡No se encontró GameOver.wav!");
             }
 
         } catch (Exception e) {
@@ -248,6 +261,14 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             if (indiceClipExplosion >= clipsExplosion.length) {
                 indiceClipExplosion = 0;
             }
+        }
+    }
+
+    public void reproducirSonidoGameOver() {
+        if (clipGameOver != null && !gameOverReproducido) {
+            clipGameOver.setFramePosition(0);
+            clipGameOver.start();
+            gameOverReproducido = true;
         }
     }
 
@@ -454,6 +475,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         if (nave.vida <= 0) {
             juegoTerminado = true;
             victoria = false;
+            reproducirSonidoGameOver();
         }
 
         repaint();
@@ -751,6 +773,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         nave.vida = 100;
         nave.x = 500;
         nave.y = 630;
+        gameOverReproducido = false;
 
         btnFinalReiniciar.setVisible(false);
         btnFinalSalir.setVisible(false);
