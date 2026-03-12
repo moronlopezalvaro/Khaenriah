@@ -204,7 +204,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         proyectiles.clear();
         proyectilesBoss.clear();
         boss = null;
-        enemigosAEliminar = 5 + nivel;
+        enemigosAEliminar = 8 + nivel;
 
         if (nivel == 10) {
             boss = new Jefe(440, 50, 4, 500); // Vida alta para el boss
