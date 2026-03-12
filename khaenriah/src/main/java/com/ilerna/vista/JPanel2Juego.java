@@ -238,12 +238,12 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.setFont(new Font("Arial", Font.BOLD, 18));
             String msg = victoria ? "HAS SALVADO A KHAENRI'AH" : "INTENTALO DE NUEVO";
             FontMetrics fm = g.getFontMetrics();
-            g.drawString(msg, getWidth() / 2 - fm.stringWidth(msg) / 2, imgY + 180);
+            g.drawString(msg, getWidth() / 2 - fm.stringWidth(msg) / 2, imgY - 150);
 
             g.setFont(new Font("Arial", Font.BOLD, 14));
             String strPuntuacion = "PUNTUACIÓN: " + puntuacion;
             FontMetrics fmPuntos = g.getFontMetrics();
-            g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY + 210);
+            g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY - 130);
 
             clipMusica.stop();
 
@@ -411,7 +411,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
             if (e.explotando) {
                 e.tiempoExplosion++;
-                if (e.tiempoExplosion > 4) { // 10 frames de explosion (aprox 200ms)
+                if (e.tiempoExplosion > 4) {
                     it.remove();
                 }
             } else {
