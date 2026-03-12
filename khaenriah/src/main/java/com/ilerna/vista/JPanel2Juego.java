@@ -552,8 +552,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             this.setComponentZOrder(btnPausaMenu, 0);
             this.setComponentZOrder(btnPausaSalir, 1);
         } else {
-            btnPausaMenu.setVisible(true);
-            btnPausaSalir.setVisible(true);
+            btnPausaMenu.setVisible(false);
+            btnPausaSalir.setVisible(false);
         }
         this.repaint();
     }
