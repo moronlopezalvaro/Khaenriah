@@ -227,8 +227,14 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 40));
-            String msg = victoria ? "¡VICTORIA FINAL!" : "GAME OVER";
-            g.drawString(msg, getWidth() / 2 - 150, imgY - 30);
+            String msg = victoria ? "HAS SALVADO A KHAENRI'AH" : "INTENTALO DE NUEVO";
+            FontMetrics fm = g.getFontMetrics();
+            g.drawString(msg, getWidth() / 2 - fm.stringWidth(msg) / 2, imgY - 60);
+
+            g.setFont(new Font("Arial", Font.BOLD, 30));
+            String strPuntuacion = "PUNTUACIÓN: " + puntuacion;
+            FontMetrics fmPuntos = g.getFontMetrics();
+            g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY - 20);
 
             return;
         }
