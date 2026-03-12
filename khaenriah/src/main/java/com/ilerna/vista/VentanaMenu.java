@@ -17,6 +17,9 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
     JPanel1Menu panel = new JPanel1Menu();
     JButton botonStart;
+    
+    
+
 
     public VentanaMenu() {
 
@@ -73,5 +76,35 @@ public class VentanaMenu extends JFrame implements ActionListener {
             System.out.println("Error al reproducir sonido");
         }
     }
+
+
+    public class VentanaCreditos extends JFrame {
+
+    public VentanaCreditos() {
+
+        setTitle("Créditos");
+        setSize(600,400);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.BLACK);
+
+        JLabel texto = new JLabel(
+                "<html><center>" +
+                "CRÉDITOS<br><br>" +
+                "Desarrollador: Abel Carbonero, Álvaro Morón y Darío Rumí<br>" +
+                "Programado en Java<br>" +
+                "Arte y diseño: Tu Nombre<br><br>" +
+                "Gracias por jugar!" +
+                "</center></html>"
+        );
+
+        texto.setForeground(Color.WHITE);
+        texto.setFont(new Font("Arial", Font.BOLD, 20));
+
+        panel.add(texto);
+        add(panel);
+    }
+}
 
 }
