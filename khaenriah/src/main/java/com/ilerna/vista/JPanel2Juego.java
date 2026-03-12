@@ -10,6 +10,8 @@ import javax.swing.*;
 import com.ilerna.modelos.*;
 import javax.sound.sampled.*;
 import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 public class JPanel2Juego extends JPanel implements ActionListener, KeyListener, MouseListener {
     private Image imagenFondo;
@@ -35,6 +37,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private JButton btnFinalReiniciar;
     private JButton btnFinalSalir;
     private Clip clipMusica;
+    private Clip[] clipsDisparo = new Clip[5];
+    private int indiceClipActual = 0;
 
     private int nivel = 1;
     private int puntuacion = 0;
@@ -67,12 +71,44 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgVictoria = new ImageIcon(getClass().getResource("/com/ilerna/resources/Victoria.jpg")).getImage();
             imgExplosion = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinelaexpl.png"))
                     .getImage();
+
             // Mantener como ImageIcon en lugar de extraer la Image directamente ayuda a
             // conservar la animación original a su velocidad
             iconProyectil = new ImageIcon(getClass().getResource("/com/ilerna/resources/bala.gif"));
 
+            // Cargar clips de disparo (pool)
+            URL urlDisparo = getClass().getResource("/com/ilerna/resources/Disparo.wav");
+            System.out.println("LOG: URL Disparo.wav = " + urlDisparo);
+            if (urlDisparo != null) {
+                AudioInputStream audioDisparo = AudioSystem.getAudioInputStream(urlDisparo);
+                AudioFormat format = audioDisparo.getFormat();
+                System.out.println("LOG: Formato Disparo = " + format);
+
+                // Leer todo el audio a la memoria
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = audioDisparo.read(buffer)) != -1) {
+                    baos.write(buffer, 0, read);
+                }
+                byte[] audioData = baos.toByteArray();
+                System.out.println("LOG: Audio leído a byte[], tamaño=" + audioData.length);
+
+                for (int i = 0; i < clipsDisparo.length; i++) {
+                    ByteArrayInputStream bais = new ByteArrayInputStream(audioData);
+                    AudioInputStream reusableStream = new AudioInputStream(bais, format,
+                            audioData.length / format.getFrameSize());
+                    clipsDisparo[i] = AudioSystem.getClip();
+                    clipsDisparo[i].open(reusableStream);
+                }
+                System.out.println("LOG: " + clipsDisparo.length + " clips cargados correctamente.");
+            } else {
+                System.out.println("LOG: ¡No se encontró Disparo.wav!");
+            }
+
         } catch (Exception e) {
-            System.out.println("Error al cargar imágenes: " + e.getMessage());
+            System.out.println("Error al cargar imágenes o sonidos: " + e.getMessage());
+            e.printStackTrace();
         }
 
         nave = new Nave(500, 630, 20, 100, 60, 60);
@@ -153,6 +189,24 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             }
         } catch (Exception e) {
             System.out.println("Error al reproducir música: " + e.getMessage());
+        }
+    }
+
+    public void reproducirSonidoDisparo() {
+        if (clipsDisparo[indiceClipActual] != null) {
+            // System.out.println("LOG: Reproduciendo clip disparo en índice: " +
+            // indiceClipActual);
+            clipsDisparo[indiceClipActual].stop();
+            clipsDisparo[indiceClipActual].setFramePosition(0); // Reiniciar al principio
+            clipsDisparo[indiceClipActual].start();
+
+            indiceClipActual++;
+            if (indiceClipActual >= clipsDisparo.length) {
+                indiceClipActual = 0;
+            }
+        } else {
+            // System.out.println("LOG: Fallo al disparar, clip nulo en índice: " +
+            // indiceClipActual);
         }
     }
 
@@ -602,7 +656,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             // Ajustando también el centrado X: -15
             proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 15, nave.y, velocidadBala, 30, 60));
             cooldownDisparo = 5; // Aproximadamente 0.3 segundos (15 * 20ms)
-
+            reproducirSonidoDisparo();
         }
     }
 
