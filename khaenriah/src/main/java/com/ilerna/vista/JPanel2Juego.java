@@ -21,6 +21,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Image imgFinal;
     private Image imgGameOver;
     private Image imgVictoria;
+    private Image imgExplosion;
     private ImageIcon iconProyectil;
 
     private Timer timer;
@@ -64,7 +65,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             imgFinal = new ImageIcon(getClass().getResource("/com/ilerna/resources/botones_final.png")).getImage();
             imgGameOver = new ImageIcon(getClass().getResource("/com/ilerna/resources/GameOver.jpg")).getImage();
             imgVictoria = new ImageIcon(getClass().getResource("/com/ilerna/resources/Victoria.jpg")).getImage();
-
+            imgExplosion = new ImageIcon(getClass().getResource("/com/ilerna/resources/geocentinelaexpl.png"))
+                    .getImage();
             // Mantener como ImageIcon en lugar de extraer la Image directamente ayuda a
             // conservar la animación original a su velocidad
             iconProyectil = new ImageIcon(getClass().getResource("/com/ilerna/resources/bala.gif"));
@@ -253,7 +255,11 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         // Dibujar Enemigos
         for (Enemigo e : enemigos) {
-            g.drawImage(imgEnemigo, (int) e.x, (int) e.y, e.ancho, e.alto, this);
+            if (e.explotando) {
+                g.drawImage(imgExplosion, (int) e.x, (int) e.y, e.ancho, e.alto, this);
+            } else {
+                g.drawImage(imgEnemigo, (int) e.x, (int) e.y, e.ancho, e.alto, this);
+            }
         }
 
         // Dibujar Boss
@@ -402,11 +408,19 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         Iterator<Enemigo> it = enemigos.iterator();
         while (it.hasNext()) {
             Enemigo e = it.next();
-            e.y += e.velocidad;
-            if (e.y > getHeight()) {
-                nave.vida -= 3;
-                puntuacion -= 1;
-                it.remove();
+
+            if (e.explotando) {
+                e.tiempoExplosion++;
+                if (e.tiempoExplosion > 4) { // 10 frames de explosion (aprox 200ms)
+                    it.remove();
+                }
+            } else {
+                e.y += e.velocidad;
+                if (e.y > getHeight()) {
+                    nave.vida -= 3;
+                    puntuacion -= 1;
+                    it.remove();
+                }
             }
         }
     }
@@ -458,9 +472,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         Iterator<Enemigo> itE = enemigos.iterator();
         while (itE.hasNext()) {
             Enemigo e = itE.next();
-            if (rectNave.intersects(e.getBounds())) {
+            if (!e.explotando && rectNave.intersects(e.getBounds())) {
                 nave.vida -= 5;
-                itE.remove();
+                e.explotando = true; // Que también explote si choca con la nave
             }
         }
 
@@ -474,8 +488,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             Iterator<Enemigo> itEnemigo = enemigos.iterator();
             while (itEnemigo.hasNext()) {
                 Enemigo e = itEnemigo.next();
-                if (rectP.intersects(e.getBounds())) {
-                    itEnemigo.remove();
+                if (!e.explotando && rectP.intersects(e.getBounds())) {
+                    e.explotando = true;
                     puntuacion += 2; // Sumar puntos por enemigo eliminado
                     hit = true;
                     break;
