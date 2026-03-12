@@ -17,9 +17,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
     JPanel1Menu panel = new JPanel1Menu();
     JButton botonStart;
-    
-    
-
+    private Clip clipMenu;
 
     public VentanaMenu() {
 
@@ -53,10 +51,18 @@ public class VentanaMenu extends JFrame implements ActionListener {
         botonStart.addActionListener(this);
         panel.add(botonStart);
         this.add(panel);
+
+        // Iniciar la música del menú
+        ReproducirSonido("/com/ilerna/resources/SonidoMenu.wav");
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonStart) {
+            // Detener la música del menú si está sonando
+            if (clipMenu != null && clipMenu.isRunning()) {
+                clipMenu.stop();
+            }
+
             // Instanciar y hacer visible la nueva ventana de diálogo
             VentanaDialogo ventanaDialogo = new VentanaDialogo();
             ventanaDialogo.setVisible(true);
@@ -68,12 +74,18 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
     public void ReproducirSonido(String nombreSonido) {
         try {
-            AudioInputStream BandaSonora = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(BandaSonora);
-            clip.start();
+            java.net.URL url = getClass().getResource(nombreSonido);
+            if (url != null) {
+                AudioInputStream bandaSonora = AudioSystem.getAudioInputStream(url);
+                clipMenu = AudioSystem.getClip();
+                clipMenu.open(bandaSonora);
+                clipMenu.loop(Clip.LOOP_CONTINUOUSLY); // Bucle infinito
+                clipMenu.start();
+            } else {
+                System.out.println("No se encontró " + nombreSonido);
+            }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            System.out.println("Error al reproducir sonido");
+            System.out.println("Error al reproducir sonido: " + ex.getMessage());
         }
     }
 
