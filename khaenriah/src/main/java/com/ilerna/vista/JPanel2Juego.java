@@ -39,6 +39,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private Clip clipMusica;
     private Clip[] clipsDisparo = new Clip[5];
     private int indiceClipActual = 0;
+    private Clip[] clipsExplosion = new Clip[5];
+    private int indiceClipExplosion = 0;
 
     private int nivel = 1;
     private int puntuacion = 0;
@@ -104,6 +106,32 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 System.out.println("LOG: " + clipsDisparo.length + " clips cargados correctamente.");
             } else {
                 System.out.println("LOG: ¡No se encontró Disparo.wav!");
+            }
+
+            // Cargar clips de explosión (pool)
+            URL urlExplosion = getClass().getResource("/com/ilerna/resources/Explosion.wav");
+            if (urlExplosion != null) {
+                AudioInputStream audioExplosion = AudioSystem.getAudioInputStream(urlExplosion);
+                AudioFormat formatExplosion = audioExplosion.getFormat();
+                
+                // Leer todo el audio de explosión a la memoria
+                ByteArrayOutputStream baosExplosion = new ByteArrayOutputStream();
+                byte[] bufferExplosion = new byte[1024];
+                int readExplosion;
+                while ((readExplosion = audioExplosion.read(bufferExplosion)) != -1) {
+                    baosExplosion.write(bufferExplosion, 0, readExplosion);
+                }
+                byte[] dataExplosion = baosExplosion.toByteArray();
+                
+                for (int i = 0; i < clipsExplosion.length; i++) {
+                    ByteArrayInputStream baisEx = new ByteArrayInputStream(dataExplosion);
+                    AudioInputStream reusableStreamEx = new AudioInputStream(baisEx, formatExplosion, dataExplosion.length / formatExplosion.getFrameSize());
+                    clipsExplosion[i] = AudioSystem.getClip();
+                    clipsExplosion[i].open(reusableStreamEx);
+                }
+                System.out.println("LOG: Clips de explosión cargados.");
+            } else {
+                System.out.println("LOG: ¡No se encontró Explosion.wav!");
             }
 
         } catch (Exception e) {
@@ -207,6 +235,19 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         } else {
             // System.out.println("LOG: Fallo al disparar, clip nulo en índice: " +
             // indiceClipActual);
+        }
+    }
+
+    public void reproducirSonidoExplosion() {
+        if (clipsExplosion[indiceClipExplosion] != null) {
+            clipsExplosion[indiceClipExplosion].stop();
+            clipsExplosion[indiceClipExplosion].setFramePosition(0);
+            clipsExplosion[indiceClipExplosion].start();
+            
+            indiceClipExplosion++;
+            if (indiceClipExplosion >= clipsExplosion.length) {
+                indiceClipExplosion = 0;
+            }
         }
     }
 
@@ -545,6 +586,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 Enemigo e = itEnemigo.next();
                 if (!e.explotando && rectP.intersects(e.getBounds())) {
                     e.explotando = true;
+                    reproducirSonidoExplosion();
                     puntuacion += 2; // Sumar puntos por enemigo eliminado
                     hit = true;
                     break;
