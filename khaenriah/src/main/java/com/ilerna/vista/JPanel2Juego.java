@@ -368,36 +368,36 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
 
         // Dibujar Nave
-        g.drawImage(imgNave, nave.x, nave.y, nave.ancho, nave.alto, this);
+        g.drawImage(imgNave, (int)nave.getX(), (int)nave.getY(), nave.getAncho(), nave.getAlto(), this);
 
         // Dibujar Enemigos
         for (Enemigo e : enemigos) {
             if (e.explotando) {
-                g.drawImage(imgExplosion, (int) e.x, (int) e.y, e.ancho, e.alto, this);
+                g.drawImage(imgExplosion, (int) e.getX(), (int) e.getY(), e.getAncho(), e.getAlto(), this);
             } else {
-                g.drawImage(imgEnemigo, (int) e.x, (int) e.y, e.ancho, e.alto, this);
+                g.drawImage(imgEnemigo, (int) e.getX(), (int) e.getY(), e.getAncho(), e.getAlto(), this);
             }
         }
 
         // Dibujar Boss
         if (boss != null) {
-            g.drawImage(imgBoss, boss.x, boss.y, boss.ancho, boss.alto, this);
+            g.drawImage(imgBoss, (int)boss.getX(), (int)boss.getY(), boss.getAncho(), boss.getAlto(), this);
             // Barra de vida Boss
             g.setColor(Color.RED);
-            g.fillRect(boss.x, boss.y - 20, boss.ancho, 10);
+            g.fillRect((int)boss.getX(), (int)boss.getY() - 20, boss.getAncho(), 10);
             g.setColor(Color.GREEN);
-            g.fillRect(boss.x, boss.y - 20, (int) (boss.ancho * (boss.vida / 500.0)), 10);
+            g.fillRect((int)boss.getX(), (int)boss.getY() - 20, (int) (boss.getAncho() * (boss.vida / 500.0)), 10);
         }
 
         // Dibujar Proyectiles Jugador
         for (Proyectil p : proyectiles) {
-            g.drawImage(iconProyectil.getImage(), (int) p.x, (int) p.y, p.ancho, p.alto,
+            g.drawImage(iconProyectil.getImage(), (int) p.getX(), (int) p.getY(), p.getAncho(), p.getAlto(),
                     iconProyectil.getImageObserver());
         }
 
         // Dibujar Proyectiles Boss
         for (Proyectil p : proyectilesBoss) {
-            g.drawImage(imgBalaBoss, (int) p.x, (int) p.y, p.ancho, p.alto, this);
+            g.drawImage(imgBalaBoss, (int) p.getX(), (int) p.getY(), p.getAncho(), p.getAlto(), this);
         }
 
         // Interfaz de Usuario (HUD)
@@ -423,17 +423,17 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         // Barra de vida jugador
         g.setColor(Color.GRAY);
         g.fillRect(20, 50, 200, 20);
-        if (nave.vida <= 30) {
+        if (nave.getVida() <= 30) {
             g.setColor(Color.RED);
-        } else if (nave.vida <= 60) {
+        } else if (nave.getVida() <= 60) {
             g.setColor(Color.ORANGE);
         } else {
             g.setColor(Color.GREEN);
         }
-        g.fillRect(20, 50, nave.vida * 2, 20);
+        g.fillRect(20, 50, nave.getVida() * 2, 20);
         g.setColor(Color.WHITE);
         g.drawRect(20, 50, 200, 20);
-        g.drawString("VIDA: " + nave.vida, 20, 85);
+        g.drawString("VIDA: " + nave.getVida(), 20, 85);
 
         // Nivel
         g.setFont(new Font("Arial", Font.BOLD, 18));
@@ -473,7 +473,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             iniciarNivel();
         }
 
-        if (nave.vida <= 0) {
+        if (nave.getVida() <= 0) {
             juegoTerminado = true;
             victoria = false;
             reproducirSonidoGameOver();
@@ -483,10 +483,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     }
 
     private void actualizarNave() {
-        if (izquierda && nave.x > 0)
-            nave.x -= nave.velocidad;
-        if (derecha && nave.x < getWidth() - nave.ancho)
-            nave.x += nave.velocidad;
+        if (izquierda && nave.getX() > 0)
+            nave.setX(nave.getX() - nave.getVelocidad());
+        if (derecha && nave.getX() < getWidth() - nave.getAncho())
+            nave.setX(nave.getX() + nave.getVelocidad());
 
         if (disparo) {
             disparo();
@@ -502,7 +502,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         while (it.hasNext()) {
             Proyectil p = it.next();
             p.mover();
-            if (p.y < -100)
+            if (p.getY() < -100)
                 it.remove();
         }
 
@@ -510,8 +510,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         Iterator<Proyectil> itB = proyectilesBoss.iterator();
         while (itB.hasNext()) {
             Proyectil p = itB.next();
-            p.mover();
-            if (p.y > getHeight() + 100)
+            p.moverHaciaAbajo();
+            if (p.getY() > getHeight() + 100)
                 itB.remove();
         }
     }
@@ -534,9 +534,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                     it.remove();
                 }
             } else {
-                e.y += e.velocidad;
-                if (e.y > getHeight()) {
-                    nave.vida -= 3;
+                e.setY(e.getY() + e.getVelocidad());
+                if (e.getY() > getHeight()) {
+                    nave.recibirDano(3);
                     puntuacion -= 1;
                     it.remove();
                 }
@@ -556,30 +556,31 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             if (random.nextInt(100) == 0)
                 bossVelY = (random.nextInt(7) - 3); // Cambio de dirección Y
 
-            boss.x += bossVelX;
-            boss.y += bossVelY;
+            boss.setX(boss.getX() + bossVelX);
+            boss.setY(boss.getY() + bossVelY);
 
             // Limites de pantalla para el boss
-            if (boss.x < 0) {
-                boss.x = 0;
+            if (boss.getX() < 0) {
+                boss.setX(0);
                 bossVelX *= -1;
             }
-            if (boss.x > getWidth() - boss.ancho) {
-                boss.x = getWidth() - boss.ancho;
+            if (boss.getX() > getWidth() - boss.getAncho()) {
+                boss.setX(getWidth() - boss.getAncho());
                 bossVelX *= -1;
             }
-            if (boss.y < 0) {
-                boss.y = 0;
+            if (boss.getY() < 0) {
+                boss.setY(0);
                 bossVelY *= -1;
             }
-            if (boss.y > 300) {
-                boss.y = 300;
+            if (boss.getY() > 300) {
+                boss.setY(300);
                 bossVelY *= -1;
             } // No baja demasiado
 
-            // Disparo del Boss
+            // Disparo del Boss (ahora los proyectiles bajan)
             if (random.nextInt(30) == 0) {
-                proyectilesBoss.add(new Proyectil(boss.x + (boss.ancho / 2) - 20, boss.y + boss.alto, -20, 40, 40));
+                Proyectil pBoss = new Proyectil(boss.getX() + (boss.getAncho() / 2) - 20, boss.getY() + boss.getAlto(), 8, 40, 40);
+                proyectilesBoss.add(pBoss);
             }
         }
     }
@@ -592,7 +593,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         while (itE.hasNext()) {
             Enemigo e = itE.next();
             if (!e.explotando && rectNave.intersects(e.getBounds())) {
-                nave.vida -= 5;
+                nave.recibirDano(5);
                 e.explotando = true; // Que también explote si choca con la nave
             }
         }
@@ -633,7 +634,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         // Colisión Nave - Boss
         if (boss != null && rectNave.intersects(boss.getBounds())) {
-            nave.vida -= 1; // Daño ligero por contacto continuo
+            nave.recibirDano(1); // Daño ligero por contacto continuo
         }
 
         // Colisión Proyectil Boss - Nave
@@ -641,7 +642,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         while (itPB.hasNext()) {
             Proyectil p = itPB.next();
             if (rectNave.intersects(p.getBounds())) {
-                nave.vida -= 10;
+                nave.recibirDano(10);
                 itPB.remove();
             }
         }
@@ -719,7 +720,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             int velocidadBala = 10 + nivel;
             // Aumentando el tamaño de la bala: de (10, 20) a (30, 60)
             // Ajustando también el centrado X: -15
-            proyectiles.add(new Proyectil(nave.x + (nave.ancho / 2) - 15, nave.y, velocidadBala, 30, 60));
+            proyectiles.add(new Proyectil(nave.getX() + (nave.getAncho() / 2) - 15, nave.getY(), velocidadBala, 30, 60));
             cooldownDisparo = 5; // Aproximadamente 0.3 segundos (15 * 20ms)
             reproducirSonidoDisparo();
         }
@@ -771,9 +772,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         puntuacion = 0;
         juegoTerminado = false;
         victoria = false;
-        nave.vida = 100;
-        nave.x = 500;
-        nave.y = 630;
+        nave.setVida(100);
+        nave.setX(500);
+        nave.setY(630);
         gameOverReproducido = false;
 
         btnFinalReiniciar.setVisible(false);
