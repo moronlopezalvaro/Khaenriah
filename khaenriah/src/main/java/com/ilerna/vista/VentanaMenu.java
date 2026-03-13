@@ -26,6 +26,11 @@ public class VentanaMenu extends JFrame implements ActionListener {
         this.setUndecorated(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        java.net.URL logoUrl = getClass().getResource("/com/ilerna/resources/Logo.png");
+        if (logoUrl != null) {
+            ImageIcon logoIcon = new ImageIcon(logoUrl);
+            this.setIconImage(logoIcon.getImage());
+        }
         panel.setLayout(null);
 
         // Cargar la imagen original
