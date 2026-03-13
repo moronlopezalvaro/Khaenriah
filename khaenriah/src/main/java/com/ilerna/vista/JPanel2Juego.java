@@ -115,7 +115,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             if (urlExplosion != null) {
                 AudioInputStream audioExplosion = AudioSystem.getAudioInputStream(urlExplosion);
                 AudioFormat formatExplosion = audioExplosion.getFormat();
-                
+
                 // Leer todo el audio de explosión a la memoria
                 ByteArrayOutputStream baosExplosion = new ByteArrayOutputStream();
                 byte[] bufferExplosion = new byte[1024];
@@ -124,10 +124,11 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                     baosExplosion.write(bufferExplosion, 0, readExplosion);
                 }
                 byte[] dataExplosion = baosExplosion.toByteArray();
-                
+
                 for (int i = 0; i < clipsExplosion.length; i++) {
                     ByteArrayInputStream baisEx = new ByteArrayInputStream(dataExplosion);
-                    AudioInputStream reusableStreamEx = new AudioInputStream(baisEx, formatExplosion, dataExplosion.length / formatExplosion.getFrameSize());
+                    AudioInputStream reusableStreamEx = new AudioInputStream(baisEx, formatExplosion,
+                            dataExplosion.length / formatExplosion.getFrameSize());
                     clipsExplosion[i] = AudioSystem.getClip();
                     clipsExplosion[i].open(reusableStreamEx);
                 }
@@ -256,7 +257,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             clipsExplosion[indiceClipExplosion].stop();
             clipsExplosion[indiceClipExplosion].setFramePosition(0);
             clipsExplosion[indiceClipExplosion].start();
-            
+
             indiceClipExplosion++;
             if (indiceClipExplosion >= clipsExplosion.length) {
                 indiceClipExplosion = 0;
@@ -322,7 +323,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         proyectiles.clear();
         proyectilesBoss.clear();
         boss = null;
-        enemigosAEliminar = 8 + nivel;
+        enemigosAEliminar = 6 + nivel;
 
         if (nivel == 10) {
             boss = new Jefe(440, 50, 4, 500); // Vida alta para el boss
