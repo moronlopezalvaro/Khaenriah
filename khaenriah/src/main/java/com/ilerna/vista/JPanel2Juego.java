@@ -187,6 +187,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             public void actionPerformed(ActionEvent e) {
                 reproducirSonidoClick();
                 System.out.println("BOTÓN SALIR PULSADO - CERRANDO APP");
+                try { Thread.sleep(300); } catch (Exception ex) {}
                 System.exit(0);
             }
         });
@@ -205,6 +206,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             @Override
             public void actionPerformed(ActionEvent e) {
                 reproducirSonidoClick();
+                try { Thread.sleep(150); } catch (Exception ex) {}
                 reiniciarJuego();
             }
         });
@@ -213,6 +215,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             @Override
             public void actionPerformed(ActionEvent e) {
                 reproducirSonidoClick();
+                try { Thread.sleep(300); } catch (Exception ex) {}
                 System.exit(0);
             }
         });

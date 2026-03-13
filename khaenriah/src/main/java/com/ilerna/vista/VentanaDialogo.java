@@ -119,6 +119,7 @@ public class VentanaDialogo extends JFrame implements ActionListener {
                     clipMusica.stop();
                 }
                 new VentanaJuego();
+                try { Thread.sleep(150); } catch (Exception ex) {}
                 this.dispose();
             }
         }

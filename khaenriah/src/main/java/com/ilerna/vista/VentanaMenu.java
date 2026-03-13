@@ -65,6 +65,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
             // Quitamos la referencia de esta ventana para que no se detenga al hacer dispose
             clipMenu = null;
+            try { Thread.sleep(150); } catch (Exception ex) {}
             this.dispose();
         }
     }
