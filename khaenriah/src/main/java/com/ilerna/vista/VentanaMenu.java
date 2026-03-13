@@ -58,6 +58,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonStart) {
+            reproducirSonidoClick();
             // Pasamos el clip a la ventana de diálogo para que no se corte la música
             VentanaDialogo ventanaDialogo = new VentanaDialogo(clipMenu);
             ventanaDialogo.setVisible(true);
@@ -85,4 +86,17 @@ public class VentanaMenu extends JFrame implements ActionListener {
         }
     }
 
+    private void reproducirSonidoClick() {
+        try {
+            java.net.URL url = getClass().getResource("/com/ilerna/resources/SonidoClick.wav");
+            if (url != null) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
+                Clip clipClick = AudioSystem.getClip();
+                clipClick.open(audioStream);
+                clipClick.start();
+            }
+        } catch (Exception ex) {
+            System.out.println("Error al reproducir sonido click: " + ex.getMessage());
+        }
+    }
 }

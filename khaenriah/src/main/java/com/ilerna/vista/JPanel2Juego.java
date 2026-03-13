@@ -176,6 +176,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         btnPausaMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                reproducirSonidoClick();
                 System.out.println("BOTÓN MENÚ PULSADO - INICIANDO TRANSICIÓN");
                 volverAlMenu();
             }
@@ -184,6 +185,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         btnPausaSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                reproducirSonidoClick();
                 System.out.println("BOTÓN SALIR PULSADO - CERRANDO APP");
                 System.exit(0);
             }
@@ -202,6 +204,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         btnFinalReiniciar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                reproducirSonidoClick();
                 reiniciarJuego();
             }
         });
@@ -209,6 +212,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         btnFinalSalir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                reproducirSonidoClick();
                 System.exit(0);
             }
         });
@@ -273,6 +277,20 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             clipGameOver.setFramePosition(0);
             clipGameOver.start();
             gameOverReproducido = true;
+        }
+    }
+
+    private void reproducirSonidoClick() {
+        try {
+            java.net.URL url = getClass().getResource("/com/ilerna/resources/SonidoClick.wav");
+            if (url != null) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
+                Clip clipClick = AudioSystem.getClip();
+                clipClick.open(audioStream);
+                clipClick.start();
+            }
+        } catch (Exception ex) {
+            System.out.println("Error al reproducir sonido click: " + ex.getMessage());
         }
     }
 

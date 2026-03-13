@@ -5,10 +5,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.sound.sampled.Clip;
 
 public class VentanaDialogo extends JFrame implements ActionListener {
     JButton botonSiguiente;
@@ -57,6 +59,7 @@ public class VentanaDialogo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonSiguiente) {
+            reproducirSonidoClick();
             if (estadoDialogo == 0) {
                 panel.setImagenFondo("/com/ilerna/resources/champiplanetadentro.jpg");
                 panel.setNombre("Champi");
@@ -121,4 +124,17 @@ public class VentanaDialogo extends JFrame implements ActionListener {
         }
     }
 
+    private void reproducirSonidoClick() {
+        try {
+            java.net.URL url = getClass().getResource("/com/ilerna/resources/SonidoClick.wav");
+            if (url != null) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
+                Clip clipClick = AudioSystem.getClip();
+                clipClick.open(audioStream);
+                clipClick.start();
+            }
+        } catch (Exception ex) {
+            System.out.println("Error al reproducir sonido click: " + ex.getMessage());
+        }
+    }
 }
