@@ -26,6 +26,11 @@ public class VentanaDialogo extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        java.net.URL logoUrl = getClass().getResource("/com/ilerna/resources/Logo.png");
+        if (logoUrl != null) {
+            ImageIcon logoIcon = new ImageIcon(logoUrl);
+            this.setIconImage(logoIcon.getImage());
+        }
 
         // Añadimos el panel que contiene la imagen de fondo
         panel = new JPanelDialogo();
