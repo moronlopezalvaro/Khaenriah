@@ -8,13 +8,16 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.sound.sampled.Clip;
 
 public class VentanaDialogo extends JFrame implements ActionListener {
     JButton botonSiguiente;
     JPanelDialogo panel;
     int estadoDialogo = 0;
+    private Clip clipMusica;
 
-    public VentanaDialogo() {
+    public VentanaDialogo(Clip clip) {
+        this.clipMusica = clip;
         this.setTitle("KHAENRI'AH");
         this.setSize(new Dimension(1080, 720));
         this.setUndecorated(true);
@@ -108,6 +111,10 @@ public class VentanaDialogo extends JFrame implements ActionListener {
                 panel.setTexto("СОРАЙЯ, ОДОБРИ НАС!!!");
                 estadoDialogo++;
             } else {
+                // Detener la música del menú justo antes de empezar la partida
+                if (clipMusica != null && clipMusica.isRunning()) {
+                    clipMusica.stop();
+                }
                 new VentanaJuego();
                 this.dispose();
             }

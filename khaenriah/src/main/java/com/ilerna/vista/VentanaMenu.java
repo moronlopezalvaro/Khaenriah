@@ -58,16 +58,12 @@ public class VentanaMenu extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == botonStart) {
-            // Detener la música del menú si está sonando
-            if (clipMenu != null && clipMenu.isRunning()) {
-                clipMenu.stop();
-            }
-
-            // Instanciar y hacer visible la nueva ventana de diálogo
-            VentanaDialogo ventanaDialogo = new VentanaDialogo();
+            // Pasamos el clip a la ventana de diálogo para que no se corte la música
+            VentanaDialogo ventanaDialogo = new VentanaDialogo(clipMenu);
             ventanaDialogo.setVisible(true);
 
-            // Cerrar la ventana del menú actual
+            // Quitamos la referencia de esta ventana para que no se detenga al hacer dispose
+            clipMenu = null;
             this.dispose();
         }
     }
