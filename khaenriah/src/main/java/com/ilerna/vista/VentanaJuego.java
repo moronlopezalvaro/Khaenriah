@@ -12,13 +12,12 @@ public class VentanaJuego extends JFrame {
         this.setSize(new Dimension(1080, 720));
         this.setUndecorated(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        java.net.URL logoUrl = getClass().getResource("/com/ilerna/resources/Logo.png");
-        if (logoUrl != null) {
-            ImageIcon logoIcon = new ImageIcon(logoUrl);
-            this.setIconImage(logoIcon.getImage());
-        }
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        java.net.URL logoUrl = getClass().getResource("/com/ilerna/resources/Logo.png");
+        if (logoUrl != null) {
+            this.setIconImage(new ImageIcon(logoUrl).getImage());
+        }
 
         JPanel2Juego panel = new JPanel2Juego();
         this.add(panel);
