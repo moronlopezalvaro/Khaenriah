@@ -1,5 +1,8 @@
 package com.ilerna.modelos;
 
+/**
+ * La nave que controla el jugador.
+ */
 public class Nave extends GameObject {
     private int vida;
 

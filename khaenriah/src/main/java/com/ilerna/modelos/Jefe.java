@@ -1,5 +1,8 @@
 package com.ilerna.modelos;
 
+/**
+ * Jefe final del juego.
+ */
 public class Jefe extends GameObject {
     public int vida;
 

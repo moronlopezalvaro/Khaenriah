@@ -1,5 +1,8 @@
 package com.ilerna.modelos;
 
+/**
+ * Proyectil o bala del juego.
+ */
 public class Proyectil extends GameObject {
 
     public Proyectil(double x, double y, int velocidad, int ancho, int alto) {

@@ -13,6 +13,9 @@ import java.net.URL;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+/**
+ * Panel donde ocurre toda la acción del juego.
+ */
 public class JPanel2Juego extends JPanel implements ActionListener, KeyListener, MouseListener {
     private Image imagenFondo;
     private Image imgNave;
@@ -318,6 +321,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         });
     }
 
+    /**
+     * Configura los enemigos y el jefe para el nivel actual.
+     */
     private void iniciarNivel() {
         enemigos.clear();
         proyectiles.clear();
@@ -330,6 +336,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
     }
 
+    /**
+     * Dibuja todos los elementos del juego en la pantalla.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -449,6 +458,9 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         g.drawString("PUNTOS: " + puntuacion, 20, 115);
     }
 
+    /**
+     * Se ejecuta en cada frame del juego para actualizar posiciones y estados.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (juegoTerminado) {

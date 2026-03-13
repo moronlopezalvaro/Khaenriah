@@ -1,5 +1,8 @@
 package com.ilerna.modelos;
 
+/**
+ * Enemigo básico del juego.
+ */
 public class Enemigo extends GameObject {
     public boolean explotando = false;
     public int tiempoExplosion = 0;
