@@ -53,7 +53,7 @@ public class VentanaMenu extends JFrame implements ActionListener {
         this.add(panel);
 
         // Iniciar la música del menú
-        ReproducirSonido("/com/ilerna/resources/SonidoMenu.wav");
+        ReproducirSonido("/com/ilerna/resources/musicainicio.wav");
     }
 
     public void actionPerformed(ActionEvent e) {
