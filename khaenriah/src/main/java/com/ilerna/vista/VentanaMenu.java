@@ -3,7 +3,6 @@ package com.ilerna.vista;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
@@ -67,9 +66,13 @@ public class VentanaMenu extends JFrame implements ActionListener {
             VentanaDialogo ventanaDialogo = new VentanaDialogo(clipMenu);
             ventanaDialogo.setVisible(true);
 
-            // Quitamos la referencia de esta ventana para que no se detenga al hacer dispose
+            // Quitamos la referencia de esta ventana para que no se detenga al hacer
+            // dispose
             clipMenu = null;
-            try { Thread.sleep(150); } catch (Exception ex) {}
+            try {
+                Thread.sleep(150);
+            } catch (Exception ex) {
+            }
             this.dispose();
         }
     }
