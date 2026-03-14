@@ -46,6 +46,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     private int indiceClipExplosion = 0;
     private Clip clipGameOver;
     private boolean gameOverReproducido = false;
+    private Clip clipVictoria;
+    private boolean victoriaReproducida = false;
 
     private int nivel = 1;
     private int puntuacion = 0;
@@ -151,6 +153,17 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 System.out.println("LOG: ¡No se encontró GameOver.wav!");
             }
 
+            // Cargar clip Victoria
+            URL urlVictoria = getClass().getResource("/com/ilerna/resources/Victoria.wav");
+            if (urlVictoria != null) {
+                AudioInputStream audioVictoria = AudioSystem.getAudioInputStream(urlVictoria);
+                clipVictoria = AudioSystem.getClip();
+                clipVictoria.open(audioVictoria);
+                System.out.println("LOG: Clip Victoria cargado.");
+            } else {
+                System.out.println("LOG: ¡No se encontró Victoria.wav!");
+            }
+
         } catch (Exception e) {
             System.out.println("Error al cargar imágenes o sonidos: " + e.getMessage());
             e.printStackTrace();
@@ -187,7 +200,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             public void actionPerformed(ActionEvent e) {
                 reproducirSonidoClick();
                 System.out.println("BOTÓN SALIR PULSADO - CERRANDO APP");
-                try { Thread.sleep(300); } catch (Exception ex) {}
+                try {
+                    Thread.sleep(300);
+                } catch (Exception ex) {
+                }
                 System.exit(0);
             }
         });
@@ -206,7 +222,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             @Override
             public void actionPerformed(ActionEvent e) {
                 reproducirSonidoClick();
-                try { Thread.sleep(150); } catch (Exception ex) {}
+                try {
+                    Thread.sleep(150);
+                } catch (Exception ex) {
+                }
                 reiniciarJuego();
             }
         });
@@ -215,7 +234,10 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             @Override
             public void actionPerformed(ActionEvent e) {
                 reproducirSonidoClick();
-                try { Thread.sleep(300); } catch (Exception ex) {}
+                try {
+                    Thread.sleep(300);
+                } catch (Exception ex) {
+                }
                 System.exit(0);
             }
         });
@@ -280,6 +302,14 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             clipGameOver.setFramePosition(0);
             clipGameOver.start();
             gameOverReproducido = true;
+        }
+    }
+
+    public void reproducirSonidoVictoria() {
+        if (clipVictoria != null && !victoriaReproducida) {
+            clipVictoria.setFramePosition(0);
+            clipVictoria.start();
+            victoriaReproducida = true;
         }
     }
 
@@ -398,7 +428,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         }
 
         // Dibujar Nave
-        g.drawImage(imgNave, (int)nave.getX(), (int)nave.getY(), nave.getAncho(), nave.getAlto(), this);
+        g.drawImage(imgNave, (int) nave.getX(), (int) nave.getY(), nave.getAncho(), nave.getAlto(), this);
 
         // Dibujar Enemigos
         for (Enemigo e : enemigos) {
@@ -411,12 +441,12 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
         // Dibujar Boss
         if (boss != null) {
-            g.drawImage(imgBoss, (int)boss.getX(), (int)boss.getY(), boss.getAncho(), boss.getAlto(), this);
+            g.drawImage(imgBoss, (int) boss.getX(), (int) boss.getY(), boss.getAncho(), boss.getAlto(), this);
             // Barra de vida Boss
             g.setColor(Color.RED);
-            g.fillRect((int)boss.getX(), (int)boss.getY() - 20, boss.getAncho(), 10);
+            g.fillRect((int) boss.getX(), (int) boss.getY() - 20, boss.getAncho(), 10);
             g.setColor(Color.GREEN);
-            g.fillRect((int)boss.getX(), (int)boss.getY() - 20, (int) (boss.getAncho() * (boss.vida / 500.0)), 10);
+            g.fillRect((int) boss.getX(), (int) boss.getY() - 20, (int) (boss.getAncho() * (boss.vida / 500.0)), 10);
         }
 
         // Dibujar Proyectiles Jugador
@@ -612,7 +642,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
 
             // Disparo del Boss (ahora los proyectiles bajan)
             if (random.nextInt(30) == 0) {
-                Proyectil pBoss = new Proyectil(boss.getX() + (boss.getAncho() / 2) - 20, boss.getY() + boss.getAlto(), 8, 40, 40);
+                Proyectil pBoss = new Proyectil(boss.getX() + (boss.getAncho() / 2) - 20, boss.getY() + boss.getAlto(),
+                        8, 40, 40);
                 proyectilesBoss.add(pBoss);
             }
         }
@@ -658,6 +689,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                     juegoTerminado = true;
                     victoria = true;
                     puntuacion += 1000; // Bonus por derrotar al boss
+                    reproducirSonidoVictoria();
                 }
             }
 
@@ -753,7 +785,8 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             int velocidadBala = 10 + nivel;
             // Aumentando el tamaño de la bala: de (10, 20) a (30, 60)
             // Ajustando también el centrado X: -15
-            proyectiles.add(new Proyectil(nave.getX() + (nave.getAncho() / 2) - 15, nave.getY(), velocidadBala, 30, 60));
+            proyectiles
+                    .add(new Proyectil(nave.getX() + (nave.getAncho() / 2) - 15, nave.getY(), velocidadBala, 30, 60));
             cooldownDisparo = 5; // Aproximadamente 0.3 segundos (15 * 20ms)
             reproducirSonidoDisparo();
         }
@@ -809,6 +842,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         nave.setX(500);
         nave.setY(630);
         gameOverReproducido = false;
+        victoriaReproducida = false;
 
         btnFinalReiniciar.setVisible(false);
         btnFinalSalir.setVisible(false);
