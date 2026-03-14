@@ -60,6 +60,7 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
     // Controles
     private boolean izquierda = false, derecha = false, disparo = false;
     private int cooldownDisparo = 0;
+    private Font fuente8Bits;
 
     public JPanel2Juego() {
         this.setLayout(null);
@@ -162,6 +163,15 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
                 System.out.println("LOG: Clip Victoria cargado.");
             } else {
                 System.out.println("LOG: ¡No se encontró Victoria.wav!");
+            }
+
+            java.io.InputStream is = getClass().getResourceAsStream("/com/ilerna/resources/PressStart2P-Regular.ttf");
+            if (is != null) {
+                fuente8Bits = Font.createFont(Font.TRUETYPE_FONT, is);
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(fuente8Bits);
+            } else {
+                System.out.println("LOG: ¡No se encontró la fuente PressStart2P-Regular.ttf!");
+                fuente8Bits = new Font("Arial", Font.BOLD, 12);
             }
 
         } catch (Exception e) {
@@ -412,12 +422,12 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
             g.drawImage(imgFinal, imgX, imgY, imgW, imgH, this);
 
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 18));
+            g.setFont(fuente8Bits.deriveFont(Font.PLAIN, 16f));
             String msg = victoria ? "HAS SALVADO A KHAENRI'AH" : "INTENTALO DE NUEVO";
             FontMetrics fm = g.getFontMetrics();
             g.drawString(msg, getWidth() / 2 - fm.stringWidth(msg) / 2, imgY - 150);
 
-            g.setFont(new Font("Arial", Font.BOLD, 14));
+            g.setFont(fuente8Bits.deriveFont(Font.PLAIN, 12f));
             String strPuntuacion = "PUNTUACIÓN: " + puntuacion;
             FontMetrics fmPuntos = g.getFontMetrics();
             g.drawString(strPuntuacion, getWidth() / 2 - fmPuntos.stringWidth(strPuntuacion) / 2, imgY - 130);
@@ -496,12 +506,12 @@ public class JPanel2Juego extends JPanel implements ActionListener, KeyListener,
         g.drawString("VIDA: " + nave.getVida(), 20, 85);
 
         // Nivel
-        g.setFont(new Font("Arial", Font.BOLD, 18));
-        g.drawString("NIVEL: " + nivel, getWidth() - 150, 70);
+        g.setFont(fuente8Bits.deriveFont(Font.PLAIN, 14f));
+        g.drawString("NIVEL: " + nivel, getWidth() - 250, 70);
         if (nivel < 10) {
-            g.drawString("RESTANTES: " + enemigosAEliminar, getWidth() - 150, 100);
+            g.drawString("RESTANTES: " + enemigosAEliminar, getWidth() - 280, 100);
         } else {
-            g.drawString("¡BATALLA FINAL!", getWidth() - 150, 100);
+            g.drawString("¡BATALLA FINAL!", getWidth() - 280, 100);
         }
 
         // Puntuación
